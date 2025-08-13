@@ -13,7 +13,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d vaterinaria"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d veterinaria"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -21,13 +21,13 @@ services:
   backend:
     build:
       context: .
-      dockerfile: DockerFile
+      dockerfile: Dockerfile
     container_name: Veterinaria-Backend
     depends_on:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/patitas
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/veterinaria
     ports:
       - "8000:8000"
     volumes:
