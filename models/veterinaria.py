@@ -16,3 +16,7 @@ class Veterinaria(Base):
         "ConfiguracionDiaria",
         back_populates="veterinaria",  # este nombre hace ref a la variabe que esta declarada en configuracionDiaria
     )
+    configuracion_excepciones = relationship(  # configuracion_excepciones hace ref al back_populates
+        "ConfiguracionExcepcion",
+        back_populates="veterinaria",  # este nombre hace ref a la variabe que esta declarada en configuracionExcepcion
+    )
