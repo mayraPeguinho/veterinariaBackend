@@ -1,6 +1,6 @@
 from config.database import Base
 from utils.enums import GeneroEnum
-from sqlalchemy import Column, Integer, String, ForeignKey, Enum as SqlEnum, boolean, DateTime, func, Date
+from sqlalchemy import Column, Integer, String, ForeignKey, Enum as SqlEnum, Boolean, DateTime, func, Date
 from sqlalchemy.orm import relationship
 
 class Animal(Base):
@@ -18,10 +18,11 @@ class Animal(Base):
     alergias = Column(String(200), nullable=False)
     fecha_nacimiento = Column(Date, nullable=True)
     fecha_fallecimiento = Column(Date, nullable=True)
-    borrado = Column(boolean, nullable=False, default=False)
+    borrado = Column(Boolean, nullable=False, default=False)
 
-    responsable_id = Column(Integer, ForeignKey("responsables.id"), nullable=False, unique=True)
+    responsable_id = Column(Integer, ForeignKey("responsables.id"), nullable=False)
     responsable = relationship("Responsable", back_populates="animales")
+    atenciones = relationship("Atencion", back_populates="animal")
 
     fecha_creacion = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())

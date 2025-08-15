@@ -1,6 +1,6 @@
 from config.database import Base
 from utils.enums import GeneroEnum
-from sqlalchemy import Column, Integer, String, ForeignKey, Enum as SqlEnum
+from sqlalchemy import Column, Integer, String, Enum as SqlEnum
 from sqlalchemy.orm import relationship
 
 class Persona(Base):
@@ -19,4 +19,6 @@ class Persona(Base):
 
     usuario = relationship("Usuario", back_populates="persona", uselist=False)
     responsable = relationship("Responsable", back_populates="persona", uselist=False)
+    ventas = relationship("Venta", back_populates="persona")
+
 
