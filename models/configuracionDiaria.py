@@ -1,7 +1,7 @@
 from config.database import Base
-from sqlalchemy import Column, Integer, String, Numeric, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from configuracionDiariaJornada import configuracion_diaria_jornada
+from .configuracionDiariaJornada import configuracionDiariaJornada
 
 
 class ConfiguracionDiaria(Base):
@@ -16,6 +16,6 @@ class ConfiguracionDiaria(Base):
 
     jornadas = relationship(
         "Jornada",  # Nombre del modelo relacionado
-        secondary=configuracion_diaria_jornada,  # Tabla intermedia que conecta ambos modelos
+        secondary=configuracionDiariaJornada,  # Tabla intermedia que conecta ambos modelos
         back_populates="configuraciones_diarias",  # Nombre del atributo inverso en Jornada
     )

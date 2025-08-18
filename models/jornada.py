@@ -1,8 +1,8 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, Numeric, ForeignKey
 from sqlalchemy.orm import relationship
-from configuracionDiariaJornada import configuracion_diaria_jornada
-from configuracionExcepcionJornada import configuracion_excepcion_jornada
+from .configuracionDiariaJornada import configuracionDiariaJornada
+from .configuracionExcepcionJornada import configuracionExcepcionJornada
 
 
 class Jornada(Base):
@@ -13,12 +13,12 @@ class Jornada(Base):
 
     configuraciones_diarias = relationship(
         "ConfiguracionDiaria",
-        secondary=configuracion_diaria_jornada,
+        secondary=configuracionDiariaJornada,
         back_populates="jornadas",
     )
 
     configuraciones_excepciones = relationship(
         "ConfiguracionExcepcion",
-        secondary=configuracion_excepcion_jornada,
+        secondary=configuracionExcepcionJornada,
         back_populates="jornadas",
     )

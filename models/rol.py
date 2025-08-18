@@ -1,7 +1,7 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from .asociaciones import roles_permisos
+from .rol_permiso import rol_permiso
 
 class Rol(Base):
     __tablename__ = "roles"
@@ -11,7 +11,7 @@ class Rol(Base):
 
     permisos = relationship(
         "Permiso",
-        secondary=roles_permisos,
+        secondary=rol_permiso,
         back_populates="roles"
     )
     usuarios = relationship("Usuario", back_populates="rol")

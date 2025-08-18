@@ -1,7 +1,7 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, ForeignKey, DateTime, func, Numeric, Date
 from sqlalchemy.orm import relationship
-from .asociaciones import atenciones_productos
+from .atencion_producto import atencion_producto
 
 class Producto(Base):
     __tablename__ = "productos"
@@ -19,7 +19,7 @@ class Producto(Base):
 
     atenciones = relationship(
         "Atencion",
-        secondary=atenciones_productos,
+        secondary=atencion_producto,
         back_populates="productos"
     )
 
