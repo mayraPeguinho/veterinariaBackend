@@ -5,10 +5,9 @@ from sqlalchemy import (
     Integer,
     ForeignKey,
 )  # Importa clases necesarias para definir tablas y columnas
-from sqlalchemy.ext.declarative import declarative_base
 
 
-configuracion_excepcion_jornada = Table(
+configuracionExcepcion_jornada = Table(
     "configuraciones_excepciones_jornadas",
     Base.metadata,  # Nombre de la tabla y metadatos
     Column(

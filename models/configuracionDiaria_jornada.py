@@ -11,7 +11,7 @@ from sqlalchemy.ext.declarative import (
 
 
 # Define la tabla intermedia para Jornada y ConfiguracionDiaria (muchos a muchos)
-configuracion_diaria_jornada = Table(
+configuracionDiaria_jornada = Table(
     "configuracion_diaria_jornada",
     Base.metadata,  # Nombre de la tabla y metadatos
     Column(
