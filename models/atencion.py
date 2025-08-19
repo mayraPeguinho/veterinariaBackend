@@ -23,6 +23,8 @@ class Atencion(Base):
         back_populates="atenciones"
     )
 
-    fecha_creacion = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    fecha_creacion = Column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
     fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
-
+    turno = relationship("Turno", back_populates="atenciones")
