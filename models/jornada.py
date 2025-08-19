@@ -1,11 +1,9 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Time
 from sqlalchemy.orm import relationship
-from models.configuracionDiaria_jornada import configuracionDiaria_jornada
-from models.configuracionExcepcion_jornada import configuracionExcepcion_jornada
-from models.configuracionDiariaEmpleado_jornada import (
-    configuracionDiariaEmpleado_jornada,
-)
+from .configuracionDiaria_jornada import configuracionDiaria_jornada
+from .configuracionExcepcion_jornada import configuracionExcepcion_jornada
+from .configuracionDiariaEmpleado_jornada import configuracionDiariaEmpleado_jornada
 
 
 class Jornada(Base):

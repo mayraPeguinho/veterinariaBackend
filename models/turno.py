@@ -11,8 +11,8 @@ from sqlalchemy import (
 from sqlalchemy.orm import (
     relationship,
 )
-from models.empleado_turno import empleado_turno
-from turno_servicio import turno_servicio
+from .empleado_turno import empleado_turno
+from .turno_servicio import turno_servicio
 
 
 class Turno(Base):

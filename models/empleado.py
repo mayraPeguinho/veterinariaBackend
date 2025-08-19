@@ -1,9 +1,9 @@
 from config.database import Base
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Numeric, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from .empleado_categoria import empleados_categorias
-from .empleado_tipoDeServicios import empleado_tipoDeServicio
-from .empleadoTurno import empleado_turno
+from .empleado_categoria import empleado_categoria
+from .empleado_tipoDeServicio import empleado_tipoDeServicio
+from .empleado_turno import empleado_turno
 from .empleado_atencion import empleado_atencion
 
 
@@ -21,7 +21,7 @@ class Empleado(Base):
         "ConfiguracionDiariaEmpleado", back_populates="empleado"
     )
     categorias = relationship(
-        "Categoria", secondary=empleados_categorias, back_populates="empleados"
+        "Categoria", secondary=empleado_categoria, back_populates="empleados"
     )
     persona_id = Column(Integer, ForeignKey("personas.id"), nullable=False)
     persona = relationship("Persona", back_populates="empleados")

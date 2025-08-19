@@ -1,9 +1,8 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, func
 from sqlalchemy.orm import relationship
-from .asociaciones import atenciones_productos
-from models.empleado_atencion import empleado_atencion
-from servicio_atencion import ServicioAtencion
+from .atencion_producto import atencion_producto
+from .empleado_atencion import empleado_atencion
 
 
 class Atencion(Base):
@@ -21,7 +20,9 @@ class Atencion(Base):
     animal = relationship("Animal", back_populates="atenciones")
     archivos = relationship("Archivo", back_populates="atencion")
     productos = relationship(
-        "Producto", secondary=atenciones_productos, back_populates="atenciones"
+        "Producto",
+        secondary=atencion_producto,
+        back_populates="atenciones"
     )
 
     fecha_creacion = Column(

@@ -1,8 +1,8 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from turno_servicio import turno_servicio
-from servicio_producto import servicio_producto
+from .turno_servicio import turno_servicio
+from .servicio_producto import servicio_producto
 
 
 class Servicio(Base):

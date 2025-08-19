@@ -10,7 +10,7 @@ from sqlalchemy import (
     DateTime,
 )
 from sqlalchemy.orm import relationship
-from models.configuracionDiaria_jornada import configuracionDiaria_jornada
+from .configuracionDiaria_jornada import configuracionDiaria_jornada
 
 
 class ConfiguracionDiaria(Base):

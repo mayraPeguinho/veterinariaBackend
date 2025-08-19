@@ -1,7 +1,7 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Time, Boolean
 from sqlalchemy.orm import relationship
-from models.empleado_categoria import empleados_categorias
+from models.empleado_categoria import empleado_categoria
 
 
 class Categoria(Base):
@@ -12,6 +12,6 @@ class Categoria(Base):
     activo = Column(Boolean, nullable=False, default=True)
 
     empleado = relationship(
-        "Empleado", secondary=empleados_categorias, back_populates="categorias"
+        "Empleado", secondary=empleado_categoria, back_populates="categorias"
     )
     tipo_de_servicio = relationship("TipoDeServicios", back_populates="categoria")

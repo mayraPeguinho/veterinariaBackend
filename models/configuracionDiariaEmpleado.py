@@ -1,11 +1,11 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
-from configuracionDiariaEmpleadoJornada import configuracion_diaria_empleado_jornada
+from .configuracionDiariaEmpleado_jornada import configuracionDiariaEmpleado_jornada
 
 
 class ConfiguracionDiariaEmpleado(Base):
-    __tablename__ = "configuracion_diaria_empleado"
+    __tablename__ = "configuraciones_diarias_empleados"
 
     id = Column(Integer, primary_key=True)
     fecha_dia_actual = Column(DateTime, nullable=False)
@@ -16,6 +16,6 @@ class ConfiguracionDiariaEmpleado(Base):
 
     jornadas = relationship(
         "ConfiguracionDiariaEmpleadoJornada",
-        secondary=configuracion_diaria_empleado_jornada,
+        secondary=configuracionDiariaEmpleado_jornada,
         back_populates="configuraciones_diarias_empleados",
     )

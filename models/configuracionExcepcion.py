@@ -1,7 +1,7 @@
 from config.database import Base
-from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
-from models.configuracionExcepcion_jornada import configuracionExcepcion_jornada
+from .configuracionExcepcion_jornada import configuracionExcepcion_jornada
 
 
 class ConfiguracionExcepcion(Base):
