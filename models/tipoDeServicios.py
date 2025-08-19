@@ -1,7 +1,7 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from .empleado_tipoDeServicios import empleado_tipoDeServicio
+from .empleado_tipoDeServicio import empleado_tipoDeServicio
 
 
 class TipoDeServicios(Base):

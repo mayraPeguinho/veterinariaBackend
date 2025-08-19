@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 from .empleado_categoria import empleado_categoria
 from .empleado_tipoDeServicio import empleado_tipoDeServicio
 from .empleado_turno import empleado_turno
+from .empleado_atencion import empleado_atencion
 
 
 class Empleado(Base):

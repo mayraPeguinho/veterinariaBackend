@@ -24,6 +24,5 @@ class ConfiguracionExcepcion(Base):
     jornadas = relationship(
         "Jornada",  # Nombre del modelo relacionado
         secondary=configuracionExcepcion_jornada,  # Tabla intermedia que conecta ambos modelos
-        secondary=configuracionExcepcion_jornada,  # Tabla intermedia que conecta ambos modelos
         back_populates="configuraciones_excepciones",  # Nombre del atributo inverso en Jornada
     )

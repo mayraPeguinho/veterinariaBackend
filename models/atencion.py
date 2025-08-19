@@ -1,9 +1,8 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, func
 from sqlalchemy.orm import relationship
-from .atencion_producto import atencion_productofrom
+from .atencion_producto import atencion_producto
 from .empleado_atencion import empleado_atencion
-from .servicio_atencion import ServicioAtencion
 
 
 class Atencion(Base):

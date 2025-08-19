@@ -8,7 +8,7 @@ from sqlalchemy import (
 
 
 turno_servicio = Table(
-    "turno_servicio",
+    "turnos_servicios",
     Base.metadata,
     Column("turno_id", Integer, ForeignKey("turnos.id"), primary_key=True),
     Column("servicio_id", Integer, ForeignKey("servicios.id"), primary_key=True),
