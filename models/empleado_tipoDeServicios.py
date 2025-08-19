@@ -1,8 +1,8 @@
 from config.database import Base
-from sqlalchemy import Table, Column, Integer, ForeignKey, MetaData
+from sqlalchemy import Table, Column, Integer, ForeignKey
 
 
-empleado_tipo_de_servicios = Table(
+empleado_tipoDeServicio = Table(
     "empleado_tipo_de_servicio",
     Base.metadata,
     Column("empleado_id", Integer, ForeignKey("empleados.id"), primary_key=True),

@@ -1,7 +1,7 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Time
 from sqlalchemy.orm import relationship
-from empleadoTipoDeServicios import empleado_tipo_de_servicios
+from .empleado_tipoDeServicios import empleado_tipoDeServicio
 
 
 class TipoDeServicios(Base):
@@ -16,6 +16,8 @@ class TipoDeServicios(Base):
 
     empleados = relationship(
         "Empleado",
-        secondary=empleado_tipo_de_servicios,
+        secondary=empleado_tipoDeServicio,
         back_populates="tipo_de_servicios",
     )
+
+    servicios = relationship("Servicio", back_populates="tipo_de_servicio")
