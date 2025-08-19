@@ -6,6 +6,8 @@ from servicio_producto import servicio_producto
 
 
 class Servicio(Base):
+
+    __tablename__ = "servicios"
     id = Column(Integer, primary_key=True)
     nombre = Column(String(100), nullable=False)
     descripcion = Column(String(600), nullable=True)

@@ -16,6 +16,8 @@ from turno_servicio import turno_servicio
 
 
 class Turno(Base):
+
+    __tablename__ = "turnos"
     id = Column(Integer, primary_key=True)
 
     hora_inicio = Column(Time, nullable=False)
