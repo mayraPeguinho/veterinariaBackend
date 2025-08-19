@@ -1,7 +1,7 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Time, Boolean
 from sqlalchemy.orm import relationship
-from empleadoCategoria import empleados_categorias
+from models.empleado_categoria import empleados_categorias
 
 
 class Categoria(Base):

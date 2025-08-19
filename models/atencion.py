@@ -2,6 +2,8 @@ from config.database import Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, func
 from sqlalchemy.orm import relationship
 from .asociaciones import atenciones_productos
+from models.empleado_atencion import empleado_atencion
+from servicio_atencion import ServicioAtencion
 
 
 class Atencion(Base):
@@ -27,3 +29,7 @@ class Atencion(Base):
     )
     fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
     turno = relationship("Turno", back_populates="atenciones")
+    empleados = relationship(
+        "Empleado", secondary=empleado_atencion, back_populates="atenciones"
+    )
+    servicio_atencion = relationship("ServicioAtencion", back_populates="atencion")

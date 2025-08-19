@@ -7,15 +7,18 @@ from sqlalchemy import (
     Time,
     Boolean,
     DateTime,
-)  # Import necessary classes to define tables
+)
 from sqlalchemy.orm import (
     relationship,
-)  # Import relationship to define many-to-many relationships
-from empleadoTurno import empleado_turno
+)
+from models.empleado_turno import empleado_turno
+from turno_servicio import turno_servicio
 
 
 class Turno(Base):
-    id = Column(Integer, primary_key=True)  # Primary key for the Turno table
+
+    __tablename__ = "turnos"
+    id = Column(Integer, primary_key=True)
 
     hora_inicio = Column(Time, nullable=False)
     dia = Column(DateTime, nullable=False)
@@ -23,12 +26,17 @@ class Turno(Base):
     observacion = Column(String(600), nullable=True)
     borrador_logico = Column(Boolean, nullable=False, default=False)
 
-    empleado = relationship("Empleado", back_populates="turnos")
     animal_id = Column(Integer, ForeignKey("animales.id"), nullable=False)
     animal = relationship("Animal", back_populates="turno")
+
     atenciones_id = Column(Integer, ForeignKey("atenciones.id"), nullable=False)
     atenciones = relationship("Atencion", back_populates="turno")
 
     empleados = relationship(
         "Empleado", secondary=empleado_turno, back_populates="turnos"
+    )
+    estado_turno = relationship("EstadoTurno", back_populates="turno")
+
+    servicio_turno = relationship(
+        "Servicio", secondary=turno_servicio, back_populates="turnos"
     )

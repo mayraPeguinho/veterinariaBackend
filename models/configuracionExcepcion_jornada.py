@@ -7,7 +7,7 @@ from sqlalchemy import (
 )  # Importa clases necesarias para definir tablas y columnas
 
 
-configuracion_excepcion_jornada = Table(
+configuracionExcepcion_jornada = Table(
     "configuraciones_excepciones_jornadas",
     Base.metadata,  # Nombre de la tabla y metadatos
     Column(
