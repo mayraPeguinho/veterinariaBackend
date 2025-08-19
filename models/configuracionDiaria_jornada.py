@@ -7,7 +7,7 @@ from sqlalchemy import (
 )  # Importa clases necesarias para definir tablas y columnas
 
 # Define la tabla intermedia para Jornada y ConfiguracionDiaria (muchos a muchos)
-configuracionDiariaJornada = Table(
+configuracionDiaria_jornada = Table(
     "configuracion_diaria_jornada",
     Base.metadata,  # Nombre de la tabla y metadatos
     Column(

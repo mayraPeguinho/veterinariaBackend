@@ -2,7 +2,7 @@ from config.database import Base
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from .empleado_categoria import empleado_categoria
-from .empleado_tipoDeServicios import empleado_tipoDeServicios
+from .empleado_tipoDeServicio import empleado_tipoDeServicio
 from .empleado_turno import empleado_turno
 
 
@@ -15,7 +15,7 @@ class Empleado(Base):
     fecha_egreso = Column(DateTime, nullable=True)
     activo = Column(Boolean, nullable=False)
     observacion = Column(String(600), nullable=True)
-    # Falta la relacion con persona
+
     configuracion_diaria_empleado = relationship(
         "ConfiguracionDiariaEmpleado", back_populates="empleado"
     )
@@ -23,10 +23,14 @@ class Empleado(Base):
         "Categoria", secondary=empleado_categoria, back_populates="empleados"
     )
     persona_id = Column(Integer, ForeignKey("personas.id"), nullable=False)
+    persona = relationship("Persona", back_populates="empleados")
 
     tipo_de_servicios = relationship(
         "TipoDeServicios",
-        secondary=empleado_tipoDeServicios,
+        secondary=empleado_tipoDeServicio,
         back_populates="empleados",
     )
     turnos = relationship("Turno", secondary=empleado_turno, back_populates="empleados")
+    atenciones = relationship(
+        "Atencion", secondary=empleado_atencion, back_populates="empleados"
+    )
