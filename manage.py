@@ -1,8 +1,11 @@
 import typer
-from config.database import Base, engine
+from config.database import Base, engine, SessionLocal
+from .seed.data_inicial import (
+    crear_tablas_iniciales,
+)
 import pkgutil
 import importlib
-import models  # tu carpeta de modelos
+import models
 from sqlalchemy import text
 
 
@@ -11,6 +14,7 @@ for _, module_name, _ in pkgutil.iter_modules(models.__path__):
     importlib.import_module(f"models.{module_name}")
 
 app = typer.Typer()
+
 
 @app.command()
 def init_db():
@@ -21,6 +25,7 @@ def init_db():
         typer.echo("✅ Tablas creadas")
     except Exception as e:
         typer.echo(f"❌ Error al crear tablas: {e}")
+
 
 @app.command()
 def drop_db():
@@ -34,6 +39,23 @@ def drop_db():
         typer.echo("🗑️ Base de datos reseteada (DROP SCHEMA CASCADE)")
     except Exception as e:
         typer.echo(f"❌ Error al eliminar tablas: {e}")
-        
+
+
+@app.command()
+def seed():
+    """Inserta datos iniciales (idempotente)."""
+    db = SessionLocal()
+    try:
+        crear_tablas_iniciales(db)
+        db.commit()
+        typer.echo("✅ Seeds aplicadas correctamente.")
+    except Exception as e:
+        db.rollback()
+        typer.echo(f"❌ Error aplicando seeds: {e}")
+        raise
+    finally:
+        db.close()
+
+
 if __name__ == "__main__":
     app()
