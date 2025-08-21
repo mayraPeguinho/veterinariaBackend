@@ -18,15 +18,13 @@ class Producto(Base):
     )  # Fin de vigencia (puede ser null si sigue vigente)
 
     tipo_producto_id = Column(
-        Integer, ForeignKey("tipos_producto.id"), nullable=False
+        Integer, ForeignKey("tipo_de_productos.id"), nullable=False
     )  # FK a tabla tipo de producto
-    tipo_producto = relationship("TipoProducto", back_populates="productos")
+    tipo_de_producto = relationship("TipoDeProducto", back_populates="productos")
     venta_productos = relationship("VentaProducto", back_populates="producto")
 
     atenciones = relationship(
-        "Atencion",
-        secondary=atencion_producto,
-        back_populates="productos"
+        "Atencion", secondary=atencion_producto, back_populates="productos"
     )
 
     fecha_creacion = Column(
@@ -34,6 +32,6 @@ class Producto(Base):
     )
     fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
 
-    servicio_producto = relationship(
+    servicios = relationship(
         "Servicio", secondary=servicio_producto, back_populates="productos"
     )

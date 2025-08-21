@@ -22,10 +22,8 @@ class Servicio(Base):
     )
     tipo_de_servicio = relationship("TipoDeServicio", back_populates="servicios")
 
-    turnos = relationship(
-        "Turno", secondary=turno_servicio, back_populates="servicio_turno"
-    )
-    servicio_producto = relationship(
-        "Producto", secondary=servicio_producto, back_populates="servicio_producto"
+    turnos = relationship("Turno", secondary=turno_servicio, back_populates="servicios")
+    productos = relationship(
+        "Producto", secondary=servicio_producto, back_populates="servicios"
     )
     servicios_atenciones = relationship("ServicioAtencion", back_populates="servicio")
