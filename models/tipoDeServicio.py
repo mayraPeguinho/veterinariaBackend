@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from .empleado_tipoDeServicio import empleado_tipoDeServicio
 
 
-class TipoDeServicios(Base):
+class TipoDeServicio(Base):
     __tablename__ = "tipo_de_servicios"
 
     id = Column(Integer, primary_key=True)

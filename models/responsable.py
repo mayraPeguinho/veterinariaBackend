@@ -6,11 +6,11 @@ class Responsable(Base):
     __tablename__ = "responsables"
 
     id = Column(Integer, primary_key=True)
-    aceptaRecordatorios = Column(Boolean, nullable=False, default=False)
+    acepta_recordatorios = Column(Boolean, nullable=False, default=False)
     borrado = Column(Boolean, nullable=False, default=False)
 
     persona_id = Column(Integer, ForeignKey("personas.id"), nullable=False, unique=True)
-    persona = relationship("Persona", back_populates="responsable")
+    persona = relationship("Persona", back_populates="responsable", uselist=False)
 
     animales = relationship("Animal", back_populates="responsable")
 

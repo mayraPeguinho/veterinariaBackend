@@ -14,4 +14,4 @@ class Categoria(Base):
     empleado = relationship(
         "Empleado", secondary=empleado_categoria, back_populates="categorias"
     )
-    tipo_de_servicio = relationship("TipoDeServicios", back_populates="categoria")
+    tipo_de_servicio = relationship("TipoDeServicio", back_populates="categoria")

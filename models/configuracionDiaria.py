@@ -2,12 +2,9 @@ from config.database import Base
 from sqlalchemy import (
     Column,
     Integer,
-    String,
-    Numeric,
     ForeignKey,
     Date,
     Time,
-    DateTime,
 )
 from sqlalchemy.orm import relationship
 from .configuracionDiaria_jornada import configuracionDiaria_jornada
@@ -18,8 +15,8 @@ class ConfiguracionDiaria(Base):
 
     id = Column(Integer, primary_key=True)
     fecha = Column(Date, nullable=False)  # Solo fecha
-    hora_apertura = Column(DateTime, nullable=False)  # Solo hora
-    hora_cierre = Column(DateTime, nullable=False)  # Fecha y hora
+    hora_apertura = Column(Time, nullable=False)  # Solo hora
+    hora_cierre = Column(Time, nullable=False)  # Fecha y hora
     veterinaria_id = Column(Integer, ForeignKey("veterinarias.id"), nullable=False)
     veterinaria = relationship("Veterinaria", back_populates="configuracion_diarias")
 

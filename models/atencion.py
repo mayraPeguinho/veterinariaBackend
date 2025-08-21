@@ -10,8 +10,8 @@ class Atencion(Base):
 
     id = Column(Integer, primary_key=True)
     causa = Column(String(100), nullable=False)
-    diagnostico = Column(String(200), nullable=False)
-    observacion = Column(String(200), nullable=False)
+    diagnostico = Column(String(200), nullable=True)
+    observacion = Column(String(200), nullable=True)
     inicio = Column(DateTime, nullable=False)  # Fecha y hora de inicio
     fin = Column(DateTime, nullable=True)  # Fecha y hora de fin
     borrado = Column(Boolean, nullable=False, default=False)
@@ -25,12 +25,14 @@ class Atencion(Base):
         back_populates="atenciones"
     )
 
+
+    turnos = relationship("Turno", back_populates="atencion")
+    empleados = relationship(
+        "Empleado", secondary=empleado_atencion, back_populates="atenciones"
+    )
+    servicios_atenciones = relationship("ServicioAtencion", back_populates="atencion")
+
     fecha_creacion = Column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
     fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
-    turno = relationship("Turno", back_populates="atenciones")
-    empleados = relationship(
-        "Empleado", secondary=empleado_atencion, back_populates="atenciones"
-    )
-    servicio_atencion = relationship("ServicioAtencion", back_populates="atencion")

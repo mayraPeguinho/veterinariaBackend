@@ -17,7 +17,7 @@ class Producto(Base):
         Date, nullable=True
     )  # Fin de vigencia (puede ser null si sigue vigente)
 
-    id_tipo_producto = Column(
+    tipo_producto_id = Column(
         Integer, ForeignKey("tipos_producto.id"), nullable=False
     )  # FK a tabla tipo de producto
     tipo_producto = relationship("TipoProducto", back_populates="productos")

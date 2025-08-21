@@ -8,7 +8,7 @@ from sqlalchemy import (
 
 # Define la tabla intermedia para Jornada y ConfiguracionDiaria (muchos a muchos)
 configuracionDiaria_jornada = Table(
-    "configuracion_diaria_jornada",
+    "configuraciones_diarias_jornadas",
     Base.metadata,  # Nombre de la tabla y metadatos
     Column(
         "jornada_id", Integer, ForeignKey("jornadas.id")

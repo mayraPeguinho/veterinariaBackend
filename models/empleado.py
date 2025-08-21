@@ -20,14 +20,17 @@ class Empleado(Base):
     configuracion_diaria_empleado = relationship(
         "ConfiguracionDiariaEmpleado", back_populates="empleado"
     )
+    ventas = relationship(
+        "Venta", back_populates="empleado"
+    )
     categorias = relationship(
         "Categoria", secondary=empleado_categoria, back_populates="empleados"
     )
     persona_id = Column(Integer, ForeignKey("personas.id"), nullable=False)
-    persona = relationship("Persona", back_populates="empleados")
+    persona = relationship("Persona", back_populates="empleados", uselist=False)
 
     tipo_de_servicios = relationship(
-        "TipoDeServicios",
+        "TipoDeServicio",
         secondary=empleado_tipoDeServicio,
         back_populates="empleados",
     )
