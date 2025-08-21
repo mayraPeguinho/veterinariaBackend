@@ -8,15 +8,8 @@ class ConfiguracionExcepcion(Base):
     __tablename__ = "configuraciones_excepciones"
 
     id = Column(Integer, primary_key=True)
-    veterinaria_id = Column(Integer, ForeignKey("veterinarias.id"), nullable=False)
     fecha = Column(DateTime, nullable=False)
-    veterinaria_id = Column(
-        Integer,
-        ForeignKey(
-            "veterinarias.id",
-        ),
-        nullable=False,
-    )
+    veterinaria_id = Column(Integer, ForeignKey("veterinarias.id"), nullable=False)
     veterinaria = relationship(
         "Veterinaria", back_populates="configuracion_excepciones"
     )

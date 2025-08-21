@@ -10,7 +10,7 @@ class ServicioAtencion(Base):
     servicio_id = Column(Integer, ForeignKey("servicios.id"), nullable=False)
     atencion_id = Column(Integer, ForeignKey("atenciones.id"), nullable=False)
 
-    servicio = relationship("Servicio", back_populates="servicio_atencion")
-    atencion = relationship("Atencion", back_populates="servicio_atencion")
+    servicio = relationship("Servicio", back_populates="servicios_atenciones")
+    atencion = relationship("Atencion", back_populates="servicios_atenciones")
 
     observacion = Column(String(255), nullable=True)

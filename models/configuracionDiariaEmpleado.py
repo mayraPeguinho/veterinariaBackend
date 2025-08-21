@@ -10,12 +10,12 @@ class ConfiguracionDiariaEmpleado(Base):
     id = Column(Integer, primary_key=True)
     fecha_dia_actual = Column(DateTime, nullable=False)
     observacion = Column(String(600), nullable=True)
-    id_empleado = Column(Integer, ForeignKey("empleados.id"))
+    empleado_id = Column(Integer, ForeignKey("empleados.id"))
 
     empleado = relationship("Empleado", back_populates="configuracion_diaria_empleado")
 
     jornadas = relationship(
-        "ConfiguracionDiariaEmpleadoJornada",
+        "Jornada",
         secondary=configuracionDiariaEmpleado_jornada,
         back_populates="configuraciones_diarias_empleados",
     )

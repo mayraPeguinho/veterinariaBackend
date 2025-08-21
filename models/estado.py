@@ -9,4 +9,5 @@ class Estado(Base):
     id = Column(Integer, primary_key=True)
     nombre = Column(String(100), nullable=False, unique=True)
 
-    estado_turno = relationship("EstadoTurno", back_populates="estado")
+    turnos = relationship("Turno", back_populates="estado")
+

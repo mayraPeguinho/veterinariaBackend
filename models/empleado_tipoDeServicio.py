@@ -10,5 +10,6 @@ empleado_tipoDeServicio = Table(
         "tipo_de_servicio_id",
         Integer,
         ForeignKey("tipo_de_servicios.id"),
+        primary_key=True
     ),
 )
