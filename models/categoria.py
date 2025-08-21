@@ -11,7 +11,7 @@ class Categoria(Base):
     nombre = Column(String(100), nullable=False, unique=True)
     activo = Column(Boolean, nullable=False, default=True)
 
-    empleado = relationship(
+    empleados = relationship(
         "Empleado", secondary=empleado_categoria, back_populates="categorias"
     )
-    tipo_de_servicio = relationship("TipoDeServicio", back_populates="categoria")
+    tipo_de_servicios = relationship("TipoDeServicio", back_populates="categoria")
