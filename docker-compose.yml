@@ -1,45 +1,45 @@
 services:
-  db:
-    image: postgres:15-alpine
-    container_name: Veterinaria-DB
-    environment:
-      POSTGRES_DB: veterinaria
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5433:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d veterinaria"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+    db:
+        image: postgres:15-alpine
+        container_name: Veterinaria-DB
+        environment:
+            POSTGRES_DB: veterinaria
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        ports:
+            - '5433:5432'
+        volumes:
+            - db_data:/var/lib/postgresql/data
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U postgres -d veterinaria']
+            interval: 5s
+            timeout: 5s
+            retries: 10
 
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: Veterinaria-Backend
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgresql+psycopg2://postgres.uzylgdtwskxhfgpcjuyl:wbkmK2zFjz7jZTOW@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require
-    ports:
-      - "8000:8000"
-    volumes:
-      - .:/app
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-    networks:
-      default:
-        aliases:
-          - backend
+    backend:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: Veterinaria-Backend
+        depends_on:
+            db:
+                condition: service_healthy
+        environment:
+            DATABASE_URL: postgresql+psycopg2://postgres.uzylgdtwskxhfgpcjuyl:wbkmK2zFjz7jZTOW@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require
+        ports:
+            - '8000:8000'
+        volumes:
+            - .:/app
+        command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+        networks:
+            default:
+                aliases:
+                    - backend
 
 volumes:
-  db_data:
+    db_data:
 
 networks:
-  default:
-    external: true
-    name: "AppVeterinaria"
+    default:
+        external: true
+        name: 'AppVeterinaria'
