@@ -6,7 +6,7 @@ from .empleado_atencion import empleado_atencion
 
 
 class Atencion(Base):
-    __tablename__ = "atenciones"
+    __tablename__ = "Atenciones"
 
     id = Column(Integer, primary_key=True)
     causa = Column(String(100), nullable=False)
@@ -16,7 +16,7 @@ class Atencion(Base):
     fin = Column(DateTime, nullable=True)  # Fecha y hora de fin
     borrado = Column(Boolean, nullable=False, default=False)
 
-    animal_id = Column(Integer, ForeignKey("animales.id"), nullable=False)
+    animal_id = Column(Integer, ForeignKey("Animales.id"), nullable=False)
     animal = relationship("Animal", back_populates="atenciones")
     archivos = relationship("Archivo", back_populates="atencion")
     productos = relationship(
@@ -31,6 +31,8 @@ class Atencion(Base):
         "Empleado", secondary=empleado_atencion, back_populates="atenciones"
     )
     servicios_atenciones = relationship("ServicioAtencion", back_populates="atencion")
+    historial_estados_atenciones = relationship("HistorialEstadoAtencion", back_populates="atencion")
+
 
     fecha_creacion = Column(
         DateTime(timezone=True), server_default=func.now(), nullable=False

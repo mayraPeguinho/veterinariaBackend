@@ -3,13 +3,13 @@ from sqlalchemy import Table, Column, Integer, ForeignKey
 
 
 empleado_tipoDeServicio = Table(
-    "empleado_tipo_de_servicio",
+    "Empleados_TipoDeServicios",
     Base.metadata,
-    Column("empleado_id", Integer, ForeignKey("empleados.id"), primary_key=True),
+    Column("empleado_id", Integer, ForeignKey("Empleados.id"), primary_key=True),
     Column(
         "tipo_de_servicio_id",
         Integer,
-        ForeignKey("tipo_de_servicios.id"),
+        ForeignKey("TipoDeServicios.id"),
         primary_key=True
     ),
 )

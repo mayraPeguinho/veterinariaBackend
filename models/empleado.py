@@ -8,7 +8,7 @@ from .empleado_atencion import empleado_atencion
 
 
 class Empleado(Base):
-    __tablename__ = "empleados"
+    __tablename__ = "Empleados"
     id = Column(Integer, primary_key=True)
     numero_legajo = Column(Integer, nullable=False, unique=True)
     matricula = Column(String(200), nullable=True)
@@ -20,11 +20,13 @@ class Empleado(Base):
     configuracion_diaria_empleado = relationship(
         "ConfiguracionDiariaEmpleado", back_populates="empleado"
     )
-    ventas = relationship("Venta", back_populates="empleado")
+    facturas = relationship(
+        "Factura", back_populates="empleado"
+    )
     categorias = relationship(
         "Categoria", secondary=empleado_categoria, back_populates="empleados"
     )
-    persona_id = Column(Integer, ForeignKey("personas.id"), nullable=False)
+    persona_id = Column(Integer, ForeignKey("Personas.id"), nullable=False)
     persona = relationship("Persona", back_populates="empleado", uselist=False)
 
     tipo_de_servicios = relationship(

@@ -15,7 +15,7 @@ from sqlalchemy.orm import relationship
 
 
 class Animal(Base):
-    __tablename__ = "animales"
+    __tablename__ = "Animales"
 
     id = Column(Integer, primary_key=True)
     nombre = Column(String(50), nullable=False)
@@ -31,7 +31,7 @@ class Animal(Base):
     fecha_fallecimiento = Column(Date, nullable=True)
     borrado = Column(Boolean, nullable=False, default=False)
 
-    responsable_id = Column(Integer, ForeignKey("responsables.id"), nullable=False)
+    responsable_id = Column(Integer, ForeignKey("Responsables.id"), nullable=False)
     responsable = relationship("Responsable", back_populates="animales",uselist=False)
     atenciones = relationship("Atencion", back_populates="animal")
 

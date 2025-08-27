@@ -5,13 +5,13 @@ from .configuracionExcepcion_jornada import configuracionExcepcion_jornada
 
 
 class ConfiguracionExcepcion(Base):
-    __tablename__ = "configuraciones_excepciones"
+    __tablename__ = "ConfiguracionesExcepciones"
 
     id = Column(Integer, primary_key=True)
     fecha = Column(DateTime, nullable=False)
-    veterinaria_id = Column(Integer, ForeignKey("veterinarias.id"), nullable=False)
+    veterinaria_id = Column(Integer, ForeignKey("Veterinarias.id"), nullable=False)
     veterinaria = relationship(
-        "Veterinaria", back_populates="configuracion_excepciones"
+        "Veterinaria", back_populates="configuraciones_excepciones"
     )
 
     jornadas = relationship(

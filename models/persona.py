@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 
 
 class Persona(Base):
-    __tablename__ = "personas"
+    __tablename__ = "Personas"
 
     id = Column(Integer, primary_key=True)
     dni = Column(String(8), nullable=False, unique=True, index=True)
@@ -18,5 +18,5 @@ class Persona(Base):
 
     usuario = relationship("Usuario", back_populates="persona", uselist=False)
     responsable = relationship("Responsable", back_populates="persona", uselist=False)
-    ventas = relationship("Venta", back_populates="persona")
+    facturas = relationship("Factura", back_populates="persona")
     empleado = relationship("Empleado", back_populates="persona", uselist=False)
