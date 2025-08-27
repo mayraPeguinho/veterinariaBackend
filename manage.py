@@ -1,6 +1,6 @@
 import typer
 from config.database import Base, engine, SessionLocal
-from .seed.data_inicial import (
+from seeds.data_inicial import (
     crear_tablas_iniciales,
 )
 import pkgutil

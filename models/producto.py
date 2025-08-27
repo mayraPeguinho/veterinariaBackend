@@ -6,7 +6,7 @@ from .servicio_producto import servicio_producto
 
 
 class Producto(Base):
-    __tablename__ = "productos"
+    __tablename__ = "Productos"
 
     id = Column(Integer, primary_key=True)
     costo = Column(Numeric(10, 2), nullable=False)  # Precio de costo actual
@@ -18,10 +18,10 @@ class Producto(Base):
     )  # Fin de vigencia (puede ser null si sigue vigente)
 
     tipo_producto_id = Column(
-        Integer, ForeignKey("tipos_producto.id"), nullable=False
+        Integer, ForeignKey("TipoDeProductos.id"), nullable=False
     )  # FK a tabla tipo de producto
-    tipo_producto = relationship("TipoProducto", back_populates="productos")
-    venta_productos = relationship("VentaProducto", back_populates="producto")
+    tipo_de_producto = relationship("TipoDeProducto", back_populates="productos")
+    detallefacturas_productos = relationship("DetalleFacturaProducto", back_populates="producto")
 
     atenciones = relationship(
         "Atencion",

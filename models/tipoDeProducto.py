@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 
 
 class TipoDeProducto(Base):
-    __tablename__ = "tipo_de_productos"
+    __tablename__ = "TipoDeProductos"
 
     id = Column(Integer, primary_key=True)
     nombre = Column(String(100), nullable=False)  # Nombre del tipo de producto

@@ -5,13 +5,13 @@ from .empleado_tipoDeServicio import empleado_tipoDeServicio
 
 
 class TipoDeServicio(Base):
-    __tablename__ = "tipo_de_servicios"
+    __tablename__ = "TipoDeServicios"
 
     id = Column(Integer, primary_key=True)
     nombre = Column(String(100), nullable=False, unique=True)
     descripcion = Column(String(600), nullable=True)
 
-    categoria_id = Column(Integer, ForeignKey("categorias.id"), nullable=False)
+    categoria_id = Column(Integer, ForeignKey("Categorias.id"), nullable=False)
     categoria = relationship("Categoria", back_populates="tipo_de_servicios")
 
     empleados = relationship(

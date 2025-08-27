@@ -17,7 +17,7 @@ from .turno_servicio import turno_servicio
 
 class Turno(Base):
 
-    __tablename__ = "turnos"
+    __tablename__ = "Turnos"
     id = Column(Integer, primary_key=True)
 
     hora_inicio = Column(Time, nullable=False)
@@ -26,17 +26,17 @@ class Turno(Base):
     observacion = Column(String(600), nullable=True)
     borrado = Column(Boolean, nullable=False, default=False)
 
-    animal_id = Column(Integer, ForeignKey("animales.id"), nullable=False)
+    animal_id = Column(Integer, ForeignKey("Animales.id"), nullable=False)
     animal = relationship("Animal", back_populates="turnos")
 
-    atencion_id = Column(Integer, ForeignKey("atenciones.id"), nullable=False)
+    atencion_id = Column(Integer, ForeignKey("Atenciones.id"), nullable=False)
     atencion = relationship("Atencion", back_populates="turnos")
 
     empleados = relationship(
         "Empleado", secondary=empleado_turno, back_populates="turnos"
     )
-    estado_id = Column(Integer, ForeignKey("estados.id"), nullable=False)
-    estado = relationship("Estado", back_populates="turnos")
+    historial_estados_turnos = relationship("HistorialEstadoTurno", back_populates="turno")
+
 
     servicios = relationship(
     "Servicio",

@@ -1,10 +1,9 @@
 from config.database import Base
 from sqlalchemy import Table, Column, Integer, ForeignKey
 
-
-servicio_producto = Table(
-    "Servicios_Productos",
+detalleFactura_servicio = Table(
+    "DetalleFacturas_Servicios",
     Base.metadata,
+    Column("detalle_factura_id", Integer, ForeignKey("DetalleFacturas.id"), primary_key=True),
     Column("servicio_id", Integer, ForeignKey("Servicios.id"), primary_key=True),
-    Column("producto_id", Integer, ForeignKey("Productos.id"), primary_key=True),
 )

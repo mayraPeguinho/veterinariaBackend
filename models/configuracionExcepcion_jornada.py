@@ -8,12 +8,13 @@ from sqlalchemy import (
 
 
 configuracionExcepcion_jornada = Table(
-    "configuraciones_excepciones_jornadas",
+    "ConfiguracionesExcepcionesJornadas",
     Base.metadata,  # Nombre de la tabla y metadatos
     Column(
-        "jornada_id", Integer, ForeignKey("jornadas.id")
-    ),  # Columna referenciando a Jornada
+        "jornada_id", Integer, ForeignKey("Jornadas.id"),
+        
+   primary_key=True),  # Columna referenciando a Jornada
     Column(
-        "configuracion_excepcion_id", Integer, ForeignKey("configuraciones_excepciones.id")
-    ),  # Columna referenciando a ConfiguracionExcepcion
+        "configuracion_excepcion_id", Integer, ForeignKey("ConfiguracionesExcepciones.id"),
+    primary_key=True),  # Columna referenciando a ConfiguracionExcepcion
 )

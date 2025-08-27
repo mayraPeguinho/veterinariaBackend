@@ -5,7 +5,7 @@ from .rol_permiso import rol_permiso
 
 
 class Permiso(Base):
-    __tablename__ = "permisos"
+    __tablename__ = "Permisos"
 
     id = Column(Integer, primary_key=True)
     nombre = Column(String(40), nullable=False)

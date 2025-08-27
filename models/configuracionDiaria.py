@@ -11,14 +11,14 @@ from .configuracionDiaria_jornada import configuracionDiaria_jornada
 
 
 class ConfiguracionDiaria(Base):
-    __tablename__ = "configuraciones_diarias"
+    __tablename__ = "ConfiguracionesDiarias"
 
     id = Column(Integer, primary_key=True)
     fecha = Column(Date, nullable=False)  # Solo fecha
     hora_apertura = Column(Time, nullable=False)  # Solo hora
     hora_cierre = Column(Time, nullable=False)  # Fecha y hora
-    veterinaria_id = Column(Integer, ForeignKey("veterinarias.id"), nullable=False)
-    veterinaria = relationship("Veterinaria", back_populates="configuracion_diarias")
+    veterinaria_id = Column(Integer, ForeignKey("Veterinarias.id"), nullable=False)
+    veterinaria = relationship("Veterinaria", back_populates="configuraciones_diarias")
 
     jornadas = relationship(
         "Jornada",  # Nombre del modelo relacionado

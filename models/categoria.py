@@ -5,13 +5,13 @@ from models.empleado_categoria import empleado_categoria
 
 
 class Categoria(Base):
-    __tablename__ = "categorias"
+    __tablename__ = "Categorias"
 
     id = Column(Integer, primary_key=True)
     nombre = Column(String(100), nullable=False, unique=True)
     activo = Column(Boolean, nullable=False, default=True)
 
-    empleado = relationship(
+    empleados = relationship(
         "Empleado", secondary=empleado_categoria, back_populates="categorias"
     )
-    tipo_de_servicio = relationship("TipoDeServicio", back_populates="categoria")
+    tipo_de_servicios = relationship("TipoDeServicio", back_populates="categoria")

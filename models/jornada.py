@@ -7,7 +7,7 @@ from .configuracionDiariaEmpleado_jornada import configuracionDiariaEmpleado_jor
 
 
 class Jornada(Base):
-    __tablename__ = "jornadas"
+    __tablename__ = "Jornadas"
     id = Column(Integer, primary_key=True)
     hora_inicio = Column(Time, nullable=False)
     hora_fin = Column(Time, nullable=False)
