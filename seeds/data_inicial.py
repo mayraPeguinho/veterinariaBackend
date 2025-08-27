@@ -4,17 +4,17 @@ from models.rol import Rol
 from models.estadoTurno import EstadoTurno
 
 
-def creacion_permisos(db: Session):
-    tabla_permiso = db
-    if not tabla_permiso.query(Permiso).all():
-        tabla_permiso.add_all(
-            [
-                Permiso(nombre="crear"),
-                Permiso(nombre="editar"),
-                Permiso(nombre="eliminar"),
-            ]
-        )
-        tabla_permiso.commit()
+# def creacion_permisos(db: Session):
+#     tabla_permiso = db
+#     if not tabla_permiso.query(Permiso).all():
+#         tabla_permiso.add_all(
+#             [
+#                 Permiso(nombre="crear"),
+#                 Permiso(nombre="editar"),
+#                 Permiso(nombre="eliminar"),
+#             ]
+#         )
+#         tabla_permiso.commit()
 
 
 def creacion_roles(db: Session):
@@ -47,6 +47,6 @@ def creacion_estados(db: Session):
 
 
 def crear_tablas_iniciales(db: Session):
-    creacion_permisos(db)
+    # creacion_permisos(db)
     creacion_roles(db)
     creacion_estados(db)

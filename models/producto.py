@@ -24,9 +24,7 @@ class Producto(Base):
     detallefacturas_productos = relationship("DetalleFacturaProducto", back_populates="producto")
 
     atenciones = relationship(
-        "Atencion",
-        secondary=atencion_producto,
-        back_populates="productos"
+        "Atencion", secondary=atencion_producto, back_populates="productos"
     )
 
     fecha_creacion = Column(
@@ -34,6 +32,6 @@ class Producto(Base):
     )
     fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
 
-    servicio_producto = relationship(
+    servicios = relationship(
         "Servicio", secondary=servicio_producto, back_populates="productos"
     )

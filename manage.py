@@ -1,8 +1,6 @@
 import typer
 from config.database import Base, engine, SessionLocal
-from seeds.data_inicial import (
-    crear_tablas_iniciales,
-)
+from seeds.data_inicial import crear_tablas_iniciales
 import pkgutil
 import importlib
 import models
@@ -31,10 +29,8 @@ def init_db():
 def drop_db():
     """Eliminar todas las tablas y objetos en cascada"""
     try:
-        with engine.connect() as conn:
-            # Borra todo el schema public con CASCADE
+        with engine.connect().execution_options(isolation_level="AUTOCOMMIT") as conn:
             conn.execute(text("DROP SCHEMA public CASCADE"))
-            # Lo vuelve a crear vacío
             conn.execute(text("CREATE SCHEMA public"))
         typer.echo("🗑️ Base de datos reseteada (DROP SCHEMA CASCADE)")
     except Exception as e:
@@ -55,6 +51,14 @@ def seed():
         raise
     finally:
         db.close()
+
+
+@app.command()
+def reset_db():
+    """Reiniciar la base de datos."""
+    drop_db()
+    init_db()
+    seed()
 
 
 if __name__ == "__main__":

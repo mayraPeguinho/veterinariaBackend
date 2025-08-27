@@ -39,6 +39,5 @@ class Turno(Base):
 
 
     servicios = relationship(
-    "Servicio",
-    secondary=turno_servicio,
-    back_populates="turnos")
+        "Servicio", secondary=turno_servicio, back_populates="turnos"
+    )
