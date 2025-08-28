@@ -7,17 +7,18 @@ import os
 # Cargar variables de entorno
 load_dotenv()
 
-# Fetch variables
-USER = os.getenv("user")
-PASSWORD = os.getenv("password")
-HOST = os.getenv("host")
-PORT = os.getenv("port")
-DBNAME = os.getenv("dbname")
+# # Fetch variables
+# USER = os.getenv("user")
+# PASSWORD = os.getenv("password")
+# HOST = os.getenv("host")
+# PORT = os.getenv("port")
+# DBNAME = os.getenv("dbname")
 
-# Construct the SQLAlchemy connection string
-DATABASE_URL = (
-    f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?sslmode=require"
-)
+# # Construct the SQLAlchemy connection string
+# DATABASE_URL = (
+#     f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?sslmode=require"
+# )
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 if not DATABASE_URL:
