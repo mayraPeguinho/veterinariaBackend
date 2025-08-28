@@ -1,0 +1,28 @@
+services:
+    db:
+        image: postgres:15-alpine
+        container_name: Veterinaria-DB
+        environment:
+            POSTGRES_DB: veterinaria
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        ports:
+            - '5433:5432'
+        volumes:
+            - db_data:/var/lib/postgresql/data
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U postgres -d veterinaria']
+            interval: 5s
+            timeout: 5s
+            retries: 10
+    backend:
+      image: vet-backend-local
+      container_name: Veterinaria-Backend-Local
+      depends_on:
+        db:
+          condition: service_healthy
+      environment:
+        DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/veterinaria
+    
+volumes:
+    db_data:
