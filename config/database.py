@@ -1,45 +1,41 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.orm import declarative_base
 from dotenv import load_dotenv
 import os
 
 # Cargar variables de entorno
 load_dotenv()
 
-# Fetch variables
 USER = os.getenv("user")
 PASSWORD = os.getenv("password")
 HOST = os.getenv("host")
 PORT = os.getenv("port")
 DBNAME = os.getenv("dbname")
 
-# Construct the SQLAlchemy connection string
 DATABASE_URL = (
-    f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?sslmode=require"
+    f"postgresql+asyncpg://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?sslmode=require"
 )
 
-
-if not DATABASE_URL:
+if not all([USER, PASSWORD, HOST, PORT, DBNAME]):
     raise ValueError(
-        "❌ Variable de entorno DATABASE_URL no encontrada. Verifica tu archivo .env"
+        "❌ Faltan variables de entorno para la conexión a la base de datos. Verifica tu archivo .env"
     )
 
-# Motor de conexión
-engine = create_engine(
-    DATABASE_URL,
+engine = create_async_engine(DATABASE_URL, echo=False)
+
+
+AsyncSessionLocal = async_sessionmaker(
+    engine, expire_on_commit=False, autoflush=False, autocommit=False
 )
-
-# Crear sesiones
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Base para modelos
 Base = declarative_base()
 
 
-# Test the connection
-try:
-    with engine.connect() as connection:
-        print("Connection successful!")
-except Exception as e:
-    print(f"Failed to connect: {e}")
+# Async
+async def get_db():
+    async with AsyncSessionLocal() as session:
+        try:
+            yield session
+            await session.commit()
+        except:
+            await session.rollback()
+            raise
