@@ -3,12 +3,12 @@ from sqlalchemy import Column, Integer, Table, String, Numeric, ForeignKey, Time
 
 
 configuracionDiariaEmpleado_jornada = Table(
-    "configuraciones_diarias_empleados_jornadas",
+    "ConfiguracionesDiariasEmpleados_Jornadas",
     Base.metadata,
-    Column("jornada_id", Integer, ForeignKey("jornadas.id")),
+    Column("jornada_id", Integer, ForeignKey("Jornadas.id")),
     Column(
         "configuracion_diaria_empleado_id",
         Integer,
-        ForeignKey("configuraciones_diarias_empleados.id"),
+        ForeignKey("ConfiguracionesDiariasEmpleados.id"),
     ),
 )

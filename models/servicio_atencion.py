@@ -1,14 +1,14 @@
 from config.database import Base
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, func
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 
 class ServicioAtencion(Base):
-    __tablename__ = "servicios_atenciones"
+    __tablename__ = "Servicios_Atenciones"
 
     id = Column(Integer, primary_key=True)
-    servicio_id = Column(Integer, ForeignKey("servicios.id"), nullable=False)
-    atencion_id = Column(Integer, ForeignKey("atenciones.id"), nullable=False)
+    servicio_id = Column(Integer, ForeignKey("Servicios.id"), nullable=False, primary_key=True)
+    atencion_id = Column(Integer, ForeignKey("Atenciones.id"), nullable=False, primary_key=True)
 
     servicio = relationship("Servicio", back_populates="servicios_atenciones")
     atencion = relationship("Atencion", back_populates="servicios_atenciones")

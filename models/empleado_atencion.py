@@ -3,8 +3,8 @@ from sqlalchemy import Table, Column, Integer, ForeignKey
 
 
 empleado_atencion = Table(
-    "empleado_atencion",
+    "Empleados_Atenciones",
     Base.metadata,
-    Column("empleado_id", Integer, ForeignKey("empleados.id"), primary_key=True),
-    Column("atencion_id", Integer, ForeignKey("atenciones.id"), primary_key=True),
+    Column("empleado_id", Integer, ForeignKey("Empleados.id"), primary_key=True),
+    Column("atencion_id", Integer, ForeignKey("Atenciones.id"), primary_key=True),
 )

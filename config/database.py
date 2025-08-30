@@ -3,20 +3,13 @@ from sqlalchemy.orm import declarative_base
 from dotenv import load_dotenv
 import os
 
-# Cargar variables de entorno
 load_dotenv()
 
-USER = os.getenv("user")
-PASSWORD = os.getenv("password")
-HOST = os.getenv("host")
-PORT = os.getenv("port")
-DBNAME = os.getenv("dbname")
 
-DATABASE_URL = (
-    f"postgresql+asyncpg://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?sslmode=require"
-)
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-if not all([USER, PASSWORD, HOST, PORT, DBNAME]):
+
+if not DATABASE_URL:
     raise ValueError(
         "❌ Faltan variables de entorno para la conexión a la base de datos. Verifica tu archivo .env"
     )
