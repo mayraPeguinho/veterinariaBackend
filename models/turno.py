@@ -7,6 +7,7 @@ from sqlalchemy import (
     Time,
     Boolean,
     DateTime,
+    func,
 )
 from sqlalchemy.orm import (
     relationship,
@@ -35,9 +36,16 @@ class Turno(Base):
     empleados = relationship(
         "Empleado", secondary=empleado_turno, back_populates="turnos"
     )
-    historial_estados_turnos = relationship("HistorialEstadoTurno", back_populates="turno")
-
+    estados_turnos = relationship("EstadoTurno", back_populates="turno")
 
     servicios = relationship(
         "Servicio", secondary=turno_servicio, back_populates="turnos"
     )
+
+    fecha_creacion = Column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
+
+    usuario_creacion = Column(String(50), nullable=False)
+    usuario_modificacion = Column(String(50), nullable=True)

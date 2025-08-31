@@ -1,5 +1,5 @@
 from config.database import Base
-from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Time
+from sqlalchemy import Column, Integer, Time, DateTime, func, String
 from sqlalchemy.orm import relationship
 from .configuracionDiaria_jornada import configuracionDiaria_jornada
 from .configuracionExcepcion_jornada import configuracionExcepcion_jornada
@@ -28,3 +28,11 @@ class Jornada(Base):
         secondary=configuracionDiariaEmpleado_jornada,
         back_populates="jornadas",
     )
+
+    fecha_creacion = Column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
+
+    usuario_creacion = Column(String(50), nullable=False)
+    usuario_modificacion = Column(String(50), nullable=True)

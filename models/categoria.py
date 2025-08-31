@@ -1,5 +1,5 @@
 from config.database import Base
-from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Time, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, func
 from sqlalchemy.orm import relationship
 from models.empleado_categoria import empleado_categoria
 
@@ -14,4 +14,12 @@ class Categoria(Base):
     empleados = relationship(
         "Empleado", secondary=empleado_categoria, back_populates="categorias"
     )
-    tipo_de_servicios = relationship("TipoDeServicio", back_populates="categoria")
+    tipo_servicios = relationship("TipoServicio", back_populates="categoria")
+
+    usuario_creacion = Column(String(50), nullable=False)
+    usuario_modificacion = Column(String(50), nullable=True)
+
+    fecha_creacion = Column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())

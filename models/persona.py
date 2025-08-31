@@ -1,6 +1,6 @@
 from config.database import Base
 from utils.enums import GeneroEnum
-from sqlalchemy import Column, Integer, String, Enum as SqlEnum
+from sqlalchemy import Column, Integer, String, Enum as SqlEnum, DateTime, func
 from sqlalchemy.orm import relationship
 
 
@@ -20,3 +20,11 @@ class Persona(Base):
     responsable = relationship("Responsable", back_populates="persona", uselist=False)
     facturas = relationship("Factura", back_populates="persona")
     empleado = relationship("Empleado", back_populates="persona", uselist=False)
+
+    fecha_creacion = Column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
+
+    usuario_creacion = Column(String(50), nullable=False)
+    usuario_modificacion = Column(String(50), nullable=True)
