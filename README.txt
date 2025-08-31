@@ -1,5 +1,12 @@
-docker compose up -d //contenedor a supabase
-docker compose -f docker-compose.yml -f docker-compose.local.yml up --build -d //contenedor con conexion a bd local
+---------------------------------------------------------------
+Imagen con conexión a Supabase
+
+docker compose -p veterinaria-supabase up -d
+---------------------------------------------------------------
+Imagen con conexión a db local
+
+docker compose -p veterinaria-local -f docker-compose.local.yml up -d
+---------------------------------------------------------------
 
 Para meternos dentro del contenedor:
 
