@@ -15,18 +15,31 @@ services:
             interval: 5s
             timeout: 5s
             retries: 10
-    backend:
-        build: .
+    backend-local:
         image: vet-backend-local
+        build:
+            context: .
+            dockerfile: Dockerfile.local
         container_name: Veterinaria-Backend-Local
         depends_on:
             db:
                 condition: service_healthy
         environment:
             DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/veterinaria
+        volumes:
+            - .:/app
         ports:
-            - '8000:8000'
-        command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+            - '8001:8000'
+        command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+        networks:
+            default:
+                aliases:
+                    - backend-local
 
 volumes:
     db_data:
+
+networks:
+    default:
+        external: true
+        name: 'AppVeterinaria'

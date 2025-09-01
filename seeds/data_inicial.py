@@ -1,38 +1,35 @@
-from models.permiso import Permiso
+import typer
+from sqlalchemy.ext.asyncio import AsyncSession
+from config.database import AsyncSessionLocal
+from sqlalchemy.future import select
 from models.rol import Rol
 from models.estadoTurno import EstadoTurno
 
 
-# def creacion_permisos(db: Session):
-#     tabla_permiso = db
-#     if not tabla_permiso.query(Permiso).all():
-#         tabla_permiso.add_all(
-#             [
-#                 Permiso(nombre="crear"),
-#                 Permiso(nombre="editar"),
-#                 Permiso(nombre="eliminar"),
-#             ]
-#         )
-#         tabla_permiso.commit()
+app = typer.Typer()
 
 
-def creacion_roles(db):
-    tabla_rol = db
-    if not tabla_rol.query(Rol).first():
-        tabla_rol.add_all(
+async def creacion_roles(db: AsyncSession):
+    result = await db.execute(select(Rol))
+    roles_existentes = result.scalars().all()
+
+    if not roles_existentes:
+        db.add_all(
             [
                 Rol(nombre="admin"),
                 Rol(nombre="empleado"),
                 Rol(nombre="cliente"),
             ]
         )
-        tabla_rol.commit()
+        await db.commit()
 
 
-def creacion_estados(db):
-    tabla_estados = db
-    if not tabla_estados.query(EstadoTurno).first():
-        tabla_estados.add_all(
+async def creacion_estados(db: AsyncSession):
+    result = await db.execute(select(EstadoTurno))
+    estados_existentes = result.scalars().all()
+
+    if not estados_existentes:
+        db.add_all(
             [
                 EstadoTurno(nombre="Creado"),
                 EstadoTurno(nombre="Agendado"),
@@ -42,10 +39,13 @@ def creacion_estados(db):
                 EstadoTurno(nombre="Expirado"),
             ]
         )
-        tabla_estados.commit()
+        await db.commit()
 
 
-async def crear_tablas_iniciales(db):
-    # creacion_permisos(db)
-    creacion_roles(db)
-    creacion_estados(db)
+async def crear_tablas_iniciales(db: AsyncSession):
+    await creacion_roles(db)
+    await creacion_estados(db)
+
+
+if __name__ == "__main__":
+    app()

@@ -5,6 +5,7 @@ import pkgutil
 import importlib
 import models
 from sqlalchemy import text
+import asyncio
 
 
 # Importar automáticamente todos los módulos dentro de models
@@ -41,17 +42,20 @@ async def drop_db():
 @app.command()
 async def seed():
     """Inserta datos iniciales (idempotente)."""
-    db = AsyncSessionLocal()
-    try:
-        await crear_tablas_iniciales(db)
-        await db.commit()
-        typer.echo("✅ Seeds aplicadas correctamente.")
-    except Exception as e:
-        await db.rollback()
-        typer.echo(f"❌ Error aplicando seeds: {e}")
-        raise
-    finally:
-        await db.close()
+    async with AsyncSessionLocal() as db:
+        try:
+            await crear_tablas_iniciales(db)
+            await db.commit()
+            typer.echo("✅ Seeds aplicadas correctamente.")
+        except Exception as e:
+            await db.rollback()
+            typer.echo(f"❌ Error aplicando seeds: {e}")
+            raise
+
+
+@app.command()
+def run_seed():
+    asyncio.run(seed())
 
 
 @app.command()
@@ -69,6 +73,5 @@ def crear_tablas():  # Crea las tablas y permite ejecutar comandos async en cons
 
 
 if __name__ == "__main__":
-    import asyncio
 
     asyncio.run(app())
