@@ -21,7 +21,9 @@ class Producto(Base):
         Integer, ForeignKey("TipoDeProductos.id"), nullable=False
     )  # FK a tabla tipo de producto
     tipo_de_producto = relationship("TipoDeProducto", back_populates="productos")
-    detallefacturas_productos = relationship("DetalleFacturaProducto", back_populates="producto")
+    detallefacturas_productos = relationship(
+        "DetalleFacturaProducto", back_populates="producto"
+    )
 
     atenciones = relationship(
         "Atencion", secondary=atencion_producto, back_populates="productos"

@@ -5,6 +5,7 @@ from .turno_servicio import turno_servicio
 from .servicio_producto import servicio_producto
 from .detalleFactura_servicio import detalleFactura_servicio
 
+
 class Servicio(Base):
 
     __tablename__ = "Servicios"
@@ -22,16 +23,12 @@ class Servicio(Base):
     )
     tipo_de_servicio = relationship("TipoDeServicio", back_populates="servicios")
 
-    turnos = relationship(
-        "Turno", secondary=turno_servicio, back_populates="servicios"
-    )
+    turnos = relationship("Turno", secondary=turno_servicio, back_populates="servicios")
     productos = relationship(
-        "Producto", secondary=servicio_producto, back_populates="servicio_producto"
+        "Producto", secondary=servicio_producto, back_populates="servicios"
     )
     servicios_atenciones = relationship("ServicioAtencion", back_populates="servicio")
 
     detalle_facturas = relationship(
-        "DetalleFactura",
-        secondary=detalleFactura_servicio,
-        back_populates="servicios"
+        "DetalleFactura", secondary=detalleFactura_servicio, back_populates="servicios"
     )
