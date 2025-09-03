@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from exceptions.handler_exepct import app_exception_handler
 
 from routers import auth
 
 app = FastAPI()
 app.include_router(auth.router)
+app.add_exception_handler(Exception, app_exception_handler)
 
 origins = [
     "http://localhost.tiangolo.com",
@@ -12,6 +14,7 @@ origins = [
     "http://localhost",
     "http://localhost:8080",
 ]
+
 
 app.add_middleware(
     CORSMiddleware,

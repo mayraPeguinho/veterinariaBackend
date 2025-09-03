@@ -9,9 +9,9 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/", status_code=201, response_model=schema_usuario.UsuarioOut)
-async def crear_usuario(
+async def registrarUsuario(
     usuario: schema_usuario.UsuarioCreate,
     db: AsyncSession = Depends(get_db),
 ):
     # Validaciones
-    return await service_auth.usuario_creado(usuario, db)
+    return await service_auth.registrarUsuario(usuario, db)

@@ -23,12 +23,10 @@ AsyncSessionLocal = async_sessionmaker(
 Base = declarative_base()
 
 
-# Async
 async def get_db():
     async with AsyncSessionLocal() as session:
-        try:
-            yield session
-            await session.commit()
-        except:
-            await session.rollback()
-            raise
+        async with session.begin():
+            try:
+                yield session
+            except:
+                raise
