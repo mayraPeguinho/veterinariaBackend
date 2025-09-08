@@ -11,15 +11,16 @@ class Usuario(Base):
     contrasenia = Column(String(128), nullable=False)
 
     rol_id = Column(Integer, ForeignKey("Roles.id"), nullable=False)
-    rol = relationship("Rol", back_populates="usuarios")
-
     persona_id = Column(Integer, ForeignKey("Personas.id"), nullable=False, unique=True)
-    persona = relationship("Persona", back_populates="usuario", uselist=False)
+    archivo_id = Column(Integer, ForeignKey("Archivos.id"))
 
     fecha_creacion = Column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
     fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
-
     usuario_creacion = Column(String(50), nullable=False)
-    usuario_modificacion = Column(String(50), nullable=True)
+    usuario_modificacion = Column(String(50))
+
+    rol = relationship("Rol", back_populates="usuarios")
+    persona = relationship("Persona", back_populates="usuario", uselist=False)
+    archivo = relationship("Archivo", back_populates="usuario", uselist=False)

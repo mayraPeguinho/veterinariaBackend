@@ -17,16 +17,20 @@ class Empleado(Base):
     activo = Column(Boolean, nullable=False)
     observacion = Column(String(600), nullable=True)
 
-    configuracion_diaria_empleado = relationship(
-        "ConfiguracionDiariaEmpleado", back_populates="empleado"
+    persona_id = Column(Integer, ForeignKey("Personas.id"), nullable=False)
+
+    fecha_creacion = Column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
     )
-    facturas = relationship("Factura", back_populates="empleado")
+    fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
+    usuario_creacion = Column(String(50), nullable=False)
+    usuario_modificacion = Column(String(50), nullable=True)
+
+    ventas = relationship("Venta", back_populates="empleado")
+    persona = relationship("Persona", back_populates="empleado", uselist=False)
     categorias = relationship(
         "Categoria", secondary=empleado_categoria, back_populates="empleados"
     )
-    persona_id = Column(Integer, ForeignKey("Personas.id"), nullable=False)
-    persona = relationship("Persona", back_populates="empleado", uselist=False)
-
     tipo_servicios = relationship(
         "TipoServicio",
         secondary=empleado_tipoServicio,
@@ -36,11 +40,6 @@ class Empleado(Base):
     atenciones = relationship(
         "Atencion", secondary=empleado_atencion, back_populates="empleados"
     )
-
-    fecha_creacion = Column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False
+    configuracion_diaria_empleado = relationship(
+        "ConfiguracionDiariaEmpleado", back_populates="empleado"
     )
-    fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
-
-    usuario_creacion = Column(String(50), nullable=False)
-    usuario_modificacion = Column(String(50), nullable=True)

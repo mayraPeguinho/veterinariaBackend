@@ -13,10 +13,12 @@ class TipoProducto(Base):
     venta_libre = Column(
         Boolean, nullable=False
     )  # Si es de venta libre o requiere receta
-
-    productos = relationship("Producto", back_populates="tipo_producto")
+    uso_interno = Column(Boolean, nullable=False)
+    permite_fraccionamiento = Column(Boolean, nullable=False)
 
     fecha_creacion = Column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
     fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
+
+    productos = relationship("Producto", back_populates="tipo_producto")

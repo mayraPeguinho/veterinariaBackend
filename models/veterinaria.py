@@ -6,12 +6,26 @@ from sqlalchemy.orm import relationship
 class Veterinaria(Base):
     __tablename__ = "Veterinarias"
 
+    # punto de venta??
+    # ingresos brutos??
     id = Column(Integer, primary_key=True)
-    nombre = Column(String, nullable=False)
-    direccion = Column(String, nullable=False)
-    telefono = Column(String, nullable=False)
-    email = Column(String, nullable=True)
-    instagram = Column(String, nullable=True)
+    nombre = Column(String(50), nullable=False)
+    direccion = Column(String(50), nullable=False)
+    telefono = Column(String(50), nullable=False)
+    email = Column(String(50), nullable=True)
+    instagram = Column(String(20), nullable=True)
+    fecha_inicio_actividades = Column(DateTime, nullable=False)
+    cuit = Column(String(50), nullable=False, unique=True)
+    razon_social = Column(String(100), nullable=False)
+    condicion_iva = Column(String(50), nullable=False)
+
+    fecha_creacion = Column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
+    usuario_creacion = Column(String(50), nullable=False)
+    usuario_modificacion = Column(String(50), nullable=True)
+
     configuraciones_diarias = relationship(  # configuracion_diarias hace ref al back_populates
         "ConfiguracionDiaria",
         back_populates="veterinaria",  # este nombre hace ref a la variabe que esta declarada en configuracionDiaria
@@ -20,10 +34,3 @@ class Veterinaria(Base):
         "ConfiguracionExcepcion",
         back_populates="veterinaria",  # este nombre hace ref a la variabe que esta declarada en configuracionExcepcion
     )
-    fecha_creacion = Column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False
-    )
-    fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
-
-    usuario_creacion = Column(String(50), nullable=False)
-    usuario_modificacion = Column(String(50), nullable=True)
