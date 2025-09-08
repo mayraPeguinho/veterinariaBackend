@@ -24,9 +24,8 @@ Base = declarative_base()
 
 
 async def get_db():
-    async with AsyncSessionLocal() as session:
-        async with session.begin():
-            try:
-                yield session
-            except:
-                raise
+    async with AsyncSessionLocal() as session:  # ← Auto-maneja sesión
+        async with session.begin():  # ← Auto-maneja transacción
+            yield session  # ← Entrega sesión con transacción activa
+        # ← Auto-commit si todo sale bien, auto-rollback si hay error
+    # ← Auto-close de sesión

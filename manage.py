@@ -1,6 +1,6 @@
 import typer
 from config.database import Base, engine, AsyncSessionLocal
-from seeds.data_inicial import crear_tablas_iniciales
+from seeds.dataInicial import crear_tablas_iniciales
 import pkgutil
 import importlib
 import models

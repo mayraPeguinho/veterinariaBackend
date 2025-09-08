@@ -1,6 +1,7 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
 from sqlalchemy.orm import relationship
+from .rol import Rol
 
 
 class Usuario(Base):

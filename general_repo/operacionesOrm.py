@@ -14,8 +14,11 @@ class OperacionesOrm:
     async def refresh(self, obj):
         await self.db.refresh(obj)
 
-    async def add_and_refresh(self, obj):
+    async def add_and_refresh(self, obj, relationships=None):
         self.db.add(obj)
         await self.db.flush()
-        await self.db.refresh(obj)
+        if relationships:
+            await self.db.refresh(obj, relationships)
+        else:
+            await self.db.refresh(obj)
         return obj

@@ -1,6 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import IntegrityError
 from datetime import datetime
 from security.auth import generar_contraseña_hash
+from utils.enums import GeneroEnum
 
 from models.usuario import Usuario as ModelUsuario
 from models.persona import Persona as ModelPersona
@@ -11,6 +13,7 @@ from exceptions.auth import (
     PersonaExistenteComoUsuarioException,
     RolInvalidoException,
 )
+from exceptions.generalRepo import ErrorBaseDatos
 
 import repositories.Persona as persona_repo
 import repositories.Usuario as usuario_repo
@@ -18,38 +21,34 @@ import general_repo.operacionesOrm as general_repo
 
 
 async def registrarUsuario(usuario: UsuarioCreate, db: AsyncSession) -> UsuarioOut:
-
     usuarioExistente = await usuario_repo.Usuario(db).buscarPorUsuario(
         usuario.nombre_de_usuario
     )
     if usuarioExistente:
         raise NombreUsuarioUsadoException()
+
     # Obtener o crear persona y devolver su id (desacoplado en método privado)
-    persona_id = await _obtener_o_crear_persona(usuario.persona, db)
+    personaId = await _ObtenerPersona(usuario.persona, db)
 
     # Crear usuario (existente o recien creada)
-    nuevo_usuario = ModelUsuario(
+    nuevoUsuario = ModelUsuario(
         nombre_de_usuario=usuario.nombre_de_usuario,
         contrasenia=generar_contraseña_hash(usuario.contrasenia),
-        persona_id=persona_id,
+        persona_id=personaId,
         rol_id=usuario.rol,
         fecha_creacion=datetime.now(),
     )
-    await general_repo.OperacionesOrm(db).add_and_refresh(nuevo_usuario)
-    return nuevo_usuario
+
+    await general_repo.OperacionesOrm(db).add_and_refresh(nuevoUsuario)
+
+    return nuevoUsuario
 
 
-async def _obtener_o_crear_persona(persona_schema, db: AsyncSession):
-    """Busca una persona por dni/email; si existe y no tiene usuario la actualiza,
-    si no existe la crea. Devuelve el id de la persona.
-
-    Lanza auth_exceptions.PersonaExistente si la persona ya tiene usuario.
-    """
+async def _ObtenerPersona(persona_schema, db: AsyncSession):
     existePersona = await persona_repo.Persona(db).buscarDni(persona_schema.dni)
 
-    # Si existe persona y ya tiene usuario
-    if existePersona and existePersona.usuario:
-        raise PersonaExistenteComoUsuarioException()
+    # if existePersona and existePersona.usuario:
+    #     raise PersonaExistenteComoUsuarioException()
 
     if existePersona:
         return existePersona.id

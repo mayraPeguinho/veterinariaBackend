@@ -3,6 +3,7 @@ from models.persona import Persona as ModelPersona
 
 from typing import TypedDict, Optional
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
 
 class Persona:
@@ -10,6 +11,10 @@ class Persona:
         self.db = db
 
     async def buscarDni(self, dni: str) -> Optional[ModelPersona]:
-        query = select(ModelPersona).where((ModelPersona.dni == dni))
+        query = (
+            select(ModelPersona)
+            .options(selectinload(ModelPersona.usuario))
+            .where((ModelPersona.dni == dni))
+        )
         result = await self.db.execute(query)
         return result.scalars().first()
