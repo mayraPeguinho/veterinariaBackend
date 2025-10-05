@@ -14,7 +14,6 @@ class Atencion(Base):
     observacion = Column(String(200), nullable=True)
     inicio = Column(DateTime, nullable=False)  # Fecha y hora de inicio
     fin = Column(DateTime, nullable=True)  # Fecha y hora de fin
-    borrado = Column(Boolean, nullable=False, default=False)
 
     animal_id = Column(Integer, ForeignKey("Animales.id"), nullable=False)
     animal = relationship("Animal", back_populates="atenciones")

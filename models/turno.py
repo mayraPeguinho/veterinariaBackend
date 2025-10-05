@@ -25,7 +25,9 @@ class Turno(Base):
     dia = Column(DateTime, nullable=False)
     modulo = Column(Integer, nullable=False)
     observacion = Column(String(600), nullable=True)
-    borrado = Column(Boolean, nullable=False, default=False)
+
+    tipo_turno_id = Column(Integer, ForeignKey("TiposTurno.id"), nullable=False)
+    tipo_turno = relationship("TipoTurno", back_populates="turnos")
 
     animal_id = Column(Integer, ForeignKey("Animales.id"), nullable=False)
     animal = relationship("Animal", back_populates="turnos")

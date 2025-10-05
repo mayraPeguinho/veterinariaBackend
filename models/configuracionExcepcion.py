@@ -14,6 +14,10 @@ class ConfiguracionExcepcion(Base):
         "Veterinaria", back_populates="configuraciones_excepciones"
     )
 
+    configuraciones_diaria = relationship(
+        "ConfiguracionDiaria", back_populates="configuracion_excepcion", uselist=False
+    )
+
     jornadas = relationship(
         "Jornada",  # Nombre del modelo relacionado
         secondary=configuracionExcepcion_jornada,  # Tabla intermedia que conecta ambos modelos

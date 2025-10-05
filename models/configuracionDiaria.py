@@ -10,10 +10,16 @@ class ConfiguracionDiaria(Base):
 
     id = Column(Integer, primary_key=True)
     dia_semana = Column(Enum(DiaSemanaEnum), nullable=False)
-    hora_apertura = Column(Time, nullable=False)  # Solo hora
-    hora_cierre = Column(Time, nullable=False)  #  hora
+
     veterinaria_id = Column(Integer, ForeignKey("Veterinarias.id"), nullable=False)
     veterinaria = relationship("Veterinaria", back_populates="configuraciones_diarias")
+
+    configuracion_excepcion_id = Column(
+        Integer, ForeignKey("ConfiguracionesExcepciones.id"), nullable=True
+    )
+    configuracion_excepcion = relationship(
+        "ConfiguracionExcepcion", back_populates="configuraciones_diaria"
+    )
 
     jornadas = relationship(
         "Jornada",  # Nombre del modelo relacionado

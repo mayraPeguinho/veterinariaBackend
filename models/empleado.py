@@ -14,7 +14,7 @@ class Empleado(Base):
     matricula = Column(String(200), nullable=True)
     fecha_ingreso = Column(DateTime, nullable=False)
     fecha_egreso = Column(DateTime, nullable=True)
-    activo = Column(Boolean, nullable=False)
+    # activo = Column(Boolean, nullable=False)
     observacion = Column(String(600), nullable=True)
 
     persona_id = Column(Integer, ForeignKey("Personas.id"), nullable=False)
@@ -42,4 +42,7 @@ class Empleado(Base):
     )
     configuracion_diaria_empleado = relationship(
         "ConfiguracionDiariaEmpleado", back_populates="empleado"
+    )
+    configuracion_excepcion_empleado = relationship(
+        "ConfiguracionExcepcionEmpleado", back_populates="empleado"
     )

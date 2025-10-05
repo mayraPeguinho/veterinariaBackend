@@ -4,6 +4,9 @@ from sqlalchemy.orm import relationship
 from .configuracionDiaria_jornada import configuracionDiaria_jornada
 from .configuracionExcepcion_jornada import configuracionExcepcion_jornada
 from .configuracionDiariaEmpleado_jornada import configuracionDiariaEmpleado_jornada
+from .configuracionExcepcionEmpleado_jornada import (
+    configuracionExcepcionEmpleado_jornada,
+)
 
 
 class Jornada(Base):
@@ -26,6 +29,12 @@ class Jornada(Base):
     configuraciones_diarias_empleados = relationship(
         "ConfiguracionDiariaEmpleado",
         secondary=configuracionDiariaEmpleado_jornada,
+        back_populates="jornadas",
+    )
+
+    configuraciones_excepciones_empleados = relationship(
+        "ConfiguracionExcepcionEmpleado",
+        secondary=configuracionExcepcionEmpleado_jornada,
         back_populates="jornadas",
     )
 

@@ -8,7 +8,6 @@ class Responsable(Base):
 
     id = Column(Integer, primary_key=True)
     acepta_recordatorios = Column(Boolean, nullable=False, default=False)
-    borrado = Column(Boolean, nullable=False, default=False)
 
     persona_id = Column(Integer, ForeignKey("Personas.id"), nullable=False, unique=True)
     persona = relationship("Persona", back_populates="responsable", uselist=False)
