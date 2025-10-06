@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from models.permiso import Permiso
 from models.rol import Rol
-from models.estadoTurno import EstadoTurno
+from models.tipoEstadoTurno import TipoEstadoTurno
 
 
 # def creacion_permisos(db: Session):
@@ -32,15 +32,15 @@ def creacion_roles(db: Session):
 
 def creacion_estados(db: Session):
     tabla_estados = db
-    if not tabla_estados.query(EstadoTurno).first():
+    if not tabla_estados.query(TipoEstadoTurno).first():
         tabla_estados.add_all(
             [
-                EstadoTurno(nombre="Creado"),
-                EstadoTurno(nombre="Agendado"),
-                EstadoTurno(nombre="Incompleto"),
-                EstadoTurno(nombre="Completado"),
-                EstadoTurno(nombre="Cancelado"),
-                EstadoTurno(nombre="Expirado"),
+                TipoEstadoTurno(nombre="Creado"),
+                TipoEstadoTurno(nombre="Agendado"),
+                TipoEstadoTurno(nombre="Incompleto"),
+                TipoEstadoTurno(nombre="Completado"),
+                TipoEstadoTurno(nombre="Cancelado"),
+                TipoEstadoTurno(nombre="Expirado"),
             ]
         )
         tabla_estados.commit()

@@ -14,27 +14,25 @@ class Atencion(Base):
     observacion = Column(String(200), nullable=True)
     inicio = Column(DateTime, nullable=False)  # Fecha y hora de inicio
     fin = Column(DateTime, nullable=True)  # Fecha y hora de fin
-    borrado = Column(Boolean, nullable=False, default=False)
 
     animal_id = Column(Integer, ForeignKey("Animales.id"), nullable=False)
     animal = relationship("Animal", back_populates="atenciones")
     archivos = relationship("Archivo", back_populates="atencion")
     productos = relationship(
-        "Producto",
-        secondary=atencion_producto,
-        back_populates="atenciones"
+        "Producto", secondary=atencion_producto, back_populates="atenciones"
     )
-
 
     turnos = relationship("Turno", back_populates="atencion")
     empleados = relationship(
         "Empleado", secondary=empleado_atencion, back_populates="atenciones"
     )
     servicios_atenciones = relationship("ServicioAtencion", back_populates="atencion")
-    historial_estados_atenciones = relationship("HistorialEstadoAtencion", back_populates="atencion")
-
+    estados_atenciones = relationship("EstadoAtencion", back_populates="atencion")
 
     fecha_creacion = Column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
     fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
+
+    usuario_creacion = Column(String(50), nullable=False)
+    usuario_modificacion = Column(String(50), nullable=True)
