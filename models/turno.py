@@ -7,6 +7,7 @@ from sqlalchemy import (
     Time,
     Boolean,
     DateTime,
+    func,
 )
 from sqlalchemy.orm import (
     relationship,
@@ -24,7 +25,9 @@ class Turno(Base):
     dia = Column(DateTime, nullable=False)
     modulo = Column(Integer, nullable=False)
     observacion = Column(String(600), nullable=True)
-    borrado = Column(Boolean, nullable=False, default=False)
+
+    tipo_turno_id = Column(Integer, ForeignKey("TiposTurno.id"), nullable=False)
+    tipo_turno = relationship("TipoTurno", back_populates="turnos")
 
     animal_id = Column(Integer, ForeignKey("Animales.id"), nullable=False)
     animal = relationship("Animal", back_populates="turnos")
@@ -35,9 +38,16 @@ class Turno(Base):
     empleados = relationship(
         "Empleado", secondary=empleado_turno, back_populates="turnos"
     )
-    historial_estados_turnos = relationship("HistorialEstadoTurno", back_populates="turno")
-
+    estados_turnos = relationship("EstadoTurno", back_populates="turno")
 
     servicios = relationship(
         "Servicio", secondary=turno_servicio, back_populates="turnos"
     )
+
+    fecha_creacion = Column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    fecha_modificacion = Column(DateTime(timezone=True), onupdate=func.now())
+
+    usuario_creacion = Column(String(50), nullable=False)
+    usuario_modificacion = Column(String(50), nullable=True)

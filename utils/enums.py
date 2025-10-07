@@ -6,5 +6,15 @@ class GeneroEnum(str, Enum):
     f = "f"
     M = "M"
     m = "m"
-    INDETERMINADO = "I"
     i = "i"
+    I = "I"
+
+
+class DiaSemanaEnum(str, Enum):
+    lunes = "Lunes"
+    martes = "Martes"
+    miercoles = "Miércoles"
+    jueves = "Jueves"
+    viernes = "Viernes"
+    sabado = "Sábado"
+    domingo = "Domingo"

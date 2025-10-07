@@ -14,10 +14,13 @@ docker exec -it Veterinaria-Backend bash
 o
 docker exec -it Veterinaria-Backend-Local bash
 
-python manage.py init-db  //crear base de datos
-python manage.py drop-db  //eliminar base de datos
+//crear base de datos
+python manage.py init-db
 
+//tirar base de datos  
+python manage.py drop-db  
 
+python manage.py reset-db  
 
 Nombre de las clases CamelCase
 metodos ,variables, nombre de archivos que no sean repositories,
