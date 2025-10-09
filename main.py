@@ -1,12 +1,21 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from exceptions.handleExcep import appHandleException
+from exceptions.handlerExcep import appHandleException
 
 # Importar models para registrar todos los modelos de SQLAlchemy
-import models
 from config.database import engine, Base
 
 from routers import auth
+
+import pkgutil
+import importlib
+import models
+
+
+# Importar automáticamente todos los módulos dentro de models
+for _, module_name, _ in pkgutil.iter_modules(models.__path__):
+    importlib.import_module(f"models.{module_name}")
+
 
 app = FastAPI()
 app.include_router(auth.router)

@@ -1,20 +1,19 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.persona import Persona as ModelPersona
-
-from typing import TypedDict, Optional
+from models.persona import Persona
+from typing import Optional
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 
-class Persona:
+class PersonaRepo:
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 
-    async def buscarDni(self, dni: str) -> Optional[ModelPersona]:
+    async def buscarPorDni(self, dni: str) -> Optional[Persona]:
         query = (
-            select(ModelPersona)
-            .options(selectinload(ModelPersona.usuario))
-            .where((ModelPersona.dni == dni))
+            select(Persona)
+            .options(selectinload(Persona.usuario))
+            .where((Persona.dni == dni))
         )
         result = await self.db.execute(query)
         return result.scalars().first()

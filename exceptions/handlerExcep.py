@@ -10,6 +10,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+# arreglar manejador de excepciones...
+
 
 def appHandleException(request: Request, exc: Exception):
     logger.error(f"Error en ruta {request.url.path}: {type(exc).__name__}: {exc}")
@@ -18,7 +20,7 @@ def appHandleException(request: Request, exc: Exception):
     if isinstance(exc, APIException):
         return JSONResponse(
             status_code=exc.status_code,
-            content={"detail": exc.detail, "type": type(exc).__name__},
+            content={"detail": exc.detail},
         )
 
     # Manejar errores de integridad de SQLAlchemy
@@ -28,7 +30,6 @@ def appHandleException(request: Request, exc: Exception):
             status_code=400,
             content={
                 "detail": "Error de integridad en la base de datos. Verifique los datos ingresados.",
-                "type": "IntegrityError",
             },
         )
 
@@ -39,7 +40,6 @@ def appHandleException(request: Request, exc: Exception):
             status_code=500,
             content={
                 "detail": "Error en la base de datos. Intente nuevamente.",
-                "type": "DatabaseError",
             },
         )
 
@@ -50,6 +50,5 @@ def appHandleException(request: Request, exc: Exception):
             status_code=500,
             content={
                 "detail": "Error interno del servidor",
-                "type": "InternalServerError",
             },
         )

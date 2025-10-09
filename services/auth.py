@@ -1,42 +1,37 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import IntegrityError
 from datetime import datetime
-from security.auth import generar_contraseña_hash
-from utils.enums import GeneroEnum
-
-from models.usuario import Usuario as ModelUsuario
-from models.persona import Persona as ModelPersona
-
+from security.auth import generarContraseñaHash, verificarContraseña
+from security.token import crearTokenAcceso
+from models.usuario import Usuario
 from schemas.usuario import UsuarioCreate, UsuarioOut
-from exceptions.auth import (
-    NombreUsuarioUsadoException,
-    PersonaExistenteComoUsuarioException,
-    RolInvalidoException,
-)
-from exceptions.generalRepo import ErrorBaseDatos
-
-import repositories.Persona as persona_repo
-import repositories.Usuario as usuario_repo
+from exceptions.auth import *
+from repositories.usuario import UsuariorRepo as usuario_repo
 import general_repo.operacionesOrm as general_repo
+import services.persona as service_persona
+from utils.enums import RolEnum
 
 
-async def registrarUsuario(usuario: UsuarioCreate, db: AsyncSession) -> UsuarioOut:
-    usuarioExistente = await usuario_repo.Usuario(db).buscarPorUsuario(
-        usuario.nombre_de_usuario
+async def registrarUsuario(
+    db: AsyncSession,
+    usuario: UsuarioCreate,
+) -> UsuarioOut:
+
+    model_usuario = await obtenerUsuarioPorNombreDeUsuario(
+        db, usuario.nombre_de_usuario
     )
-    if usuarioExistente:
+    if model_usuario is not None:
         raise NombreUsuarioUsadoException()
+    personaId = await service_persona.obtenerIdPersona(
+        db, usuario.persona, usuario.nombre_de_usuario
+    )
 
-    # Obtener o crear persona y devolver su id (desacoplado en método privado)
-    personaId = await _ObtenerPersona(usuario.persona, db)
-
-    # Crear usuario (existente o recien creada)
-    nuevoUsuario = ModelUsuario(
+    nuevoUsuario = Usuario(
         nombre_de_usuario=usuario.nombre_de_usuario,
-        contrasenia=generar_contraseña_hash(usuario.contrasenia),
+        contrasenia=generarContraseñaHash(usuario.contrasenia),
         persona_id=personaId,
-        rol_id=usuario.rol,
+        rol_id=RolEnum.CLIENTE.value,
         fecha_creacion=datetime.now(),
+        usuario_creacion=usuario.nombre_de_usuario,
     )
 
     await general_repo.OperacionesOrm(db).add_and_refresh(nuevoUsuario)
@@ -44,18 +39,14 @@ async def registrarUsuario(usuario: UsuarioCreate, db: AsyncSession) -> UsuarioO
     return nuevoUsuario
 
 
-async def _ObtenerPersona(persona_schema, db: AsyncSession):
-    existePersona = await persona_repo.Persona(db).buscarDni(persona_schema.dni)
+async def login(db: AsyncSession, username, password):
 
-    # if existePersona and existePersona.usuario:
-    #     raise PersonaExistenteComoUsuarioException()
-
-    if existePersona:
-        return existePersona.id
+    usuario_existente = await obtenerUsuarioPorNombreDeUsuario(db, username)
+    if verificarContraseña(password, usuario_existente.contrasenia):
+        return crearTokenAcceso({"sub": username})
     else:
-        persona_payload = persona_schema.model_dump(exclude_none=True)
+        raise CredencialesInvalidasException()
 
-        # No existe persona: crear nueva
-        nueva_persona = ModelPersona(**persona_payload)
-        await general_repo.OperacionesOrm(db).add_and_refresh(nueva_persona)
-        return nueva_persona.id
+
+async def obtenerUsuarioPorNombreDeUsuario(db, username: str):
+    return await usuario_repo(db).buscarPorUsuario(username)

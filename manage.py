@@ -1,77 +1,90 @@
 import typer
-from config.database import Base, engine, AsyncSessionLocal
-from seeds.dataInicial import crear_tablas_iniciales
+import asyncio
 import pkgutil
 import importlib
-import models
 from sqlalchemy import text
-import asyncio
+from config.database import Base, engine, AsyncSessionLocal
+from seeds.dataInicial import crear_tablas_iniciales
+import models
 
-
-# Importar automáticamente todos los módulos dentro de models
+# Importar automáticamente todos los modelos
 for _, module_name, _ in pkgutil.iter_modules(models.__path__):
     importlib.import_module(f"models.{module_name}")
 
 app = typer.Typer()
 
 
-@app.command()
-async def init_db():
-    """Crear tablas"""
-    typer.echo("Actualizando base de datos...")
-    try:
-        async with engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
-        typer.echo("✅ Tablas creadas")
-    except Exception as e:
-        typer.echo(f"❌ Error al crear tablas: {e}")
+# ----------------------
+# Funciones async internas
+# ----------------------
+async def _init_db():
+    """Crear todas las tablas."""
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
 
-@app.command()
-async def drop_db():
-    """Eliminar todas las tablas y objetos en cascada"""
-    try:
-        async with engine.begin() as conn:
-            await conn.execute(text("DROP SCHEMA public CASCADE"))
-            await conn.execute(text("CREATE SCHEMA public"))
-            typer.echo("🗑️ Base de datos reseteada (DROP SCHEMA CASCADE)")
-    except Exception as e:
-        typer.echo(f"❌ Error al eliminar tablas: {e}")
+async def _drop_db():
+    """Eliminar todas las tablas y recrear el esquema."""
+    async with engine.connect() as conn:
+        # habilitar autocommit
+        await conn.execution_options(isolation_level="AUTOCOMMIT")
+        await conn.execute(text("DROP SCHEMA public CASCADE"))
+        await conn.execute(text("CREATE SCHEMA public"))
 
 
-@app.command()
-async def seed():
-    """Inserta datos iniciales (idempotente)."""
+async def _seed_db():
+    """Aplicar seeds iniciales (idempotente)."""
     async with AsyncSessionLocal() as db:
         try:
             await crear_tablas_iniciales(db)
             await db.commit()
-            typer.echo("✅ Seeds aplicadas correctamente.")
-        except Exception as e:
+        except Exception:
             await db.rollback()
-            typer.echo(f"❌ Error aplicando seeds: {e}")
             raise
 
 
+# ----------------------
+# Comandos Typer
+# ----------------------
 @app.command()
-def run_seed():
-    asyncio.run(seed())
+def init_db():
+    """Crear tablas de la base de datos."""
+    typer.echo("🔄 Creando tablas...")
+    try:
+        asyncio.run(_init_db())
+        typer.echo("✅ Tablas creadas correctamente.")
+    except Exception as e:
+        typer.echo(f"❌ Error creando tablas: {e}")
 
 
 @app.command()
-async def reset_db():
-    """Reiniciar la base de datos."""
-    await drop_db()
-    await init_db()
-    await seed()
+def reset_db():
+    """Reiniciar la base de datos y aplicar seeds."""
+    typer.echo("♻️ Reseteando base de datos...")
+
+    async def _reset():
+        await _drop_db()
+        await _init_db()
+        await _seed_db()
+
+    try:
+        asyncio.run(_reset())
+        typer.echo("✅ Base de datos reiniciada y seeds aplicadas.")
+    except Exception as e:
+        typer.echo(f"❌ Error reseteando base de datos: {e}")
 
 
 @app.command()
-def crear_tablas():  # Crea las tablas y permite ejecutar comandos async en consola
-    typer.echo("Actualizando base de datos...")
-    asyncio.run(init_db())
+def seed():
+    """Aplicar seeds a la base de datos."""
+    typer.echo("🌱 Aplicando seeds...")
+    try:
+        asyncio.run(_seed_db())
+        typer.echo("✅ Seeds aplicadas correctamente.")
+    except Exception as e:
+        typer.echo(f"❌ Error aplicando seeds: {e}")
 
 
+# ----------------------
 if __name__ == "__main__":
-
-    asyncio.run(app())
+    app()

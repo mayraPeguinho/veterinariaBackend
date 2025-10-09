@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, ConfigDict
 from typing import Optional, Annotated
+from utils.enums import GeneroEnum
 from utils.enums import GeneroEnum
 
 
@@ -8,7 +9,7 @@ class PersonaCreate(BaseModel):
     apellido: Annotated[str, Field(min_length=1, max_length=50)]
     dni: Annotated[str, Field(min_length=6, max_length=20)]
     telefono: Annotated[str, Field(min_length=6, max_length=20)]
-    genero: str  # Temporal: volver a string para debug
+    genero: GeneroEnum  # Temporal: volver a string para debug
     direccion: Optional[Annotated[str, Field(max_length=100)]] = None
     email: EmailStr
 
@@ -23,5 +24,4 @@ class PersonaOut(BaseModel):
     direccion: Optional[str]
     email: EmailStr
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
