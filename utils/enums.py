@@ -1,10 +1,19 @@
 from enum import Enum
 
 
+class RolEnum(Enum):
+    ADMIN = 1
+    EMPLEADO = 2
+    CLIENTE = 3
+
+
 class GeneroEnum(str, Enum):
     F = "F"
+    f = "f"
     M = "M"
-    INDETERMINADO = "I"
+    m = "m"
+    i = "i"
+    I = "I"
 
 
 class DiaSemanaEnum(str, Enum):

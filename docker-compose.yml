@@ -6,7 +6,7 @@ services:
             dockerfile: Dockerfile
         container_name: Veterinaria-Backend
         environment:
-            DATABASE_URL: ${DATABASE_URL}
+            DATABASE_URL: ${DATABASE_URL_SUPABASE}
         ports:
             - '8000:8000'
         volumes:
