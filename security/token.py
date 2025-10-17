@@ -1,4 +1,4 @@
-from exceptions.auth import *
+from services.exceptions.auth import *
 from jose import jwt
 from jose.exceptions import JWTError
 from datetime import datetime, timedelta, timezone

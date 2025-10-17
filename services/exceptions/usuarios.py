@@ -1,4 +1,13 @@
-from exceptions.generalRepo import APIException
+from exceptions.general import APIException
+
+
+class NumeroDocumentoAsignadoException(APIException):
+    def __init__(
+        self,
+        detail: str = "El numero de documento ya está en uso.",
+        status_code: int = 409,
+    ):
+        super().__init__(detail, status_code)
 
 
 class NombreUsuarioUsadoException(APIException):
@@ -24,15 +33,6 @@ class RolInvalidoException(APIException):
         self,
         detail: str = "Rol inválido.",
         status_code: int = 400,
-    ):
-        super().__init__(detail, status_code)
-
-
-class CredencialesInvalidasException(APIException):
-    def __init__(
-        self,
-        detail: str = "Credenciales inválidas.",
-        status_code: int = 401,
     ):
         super().__init__(detail, status_code)
 

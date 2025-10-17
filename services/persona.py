@@ -4,15 +4,15 @@ import general_repo.operacionesOrm as general_repo
 from repositories.persona import PersonaRepo
 
 
-async def obtenerIdPersona(db: AsyncSession, persona_schema, usuario_creacion: str):
+async def obtenerPersona(db: AsyncSession, persona_schema, usuario_creacion: str):
     existePersona = await PersonaRepo(db).buscarPorDni(persona_schema.dni)
 
     if existePersona:
-        return existePersona.id
+        return existePersona
     else:
-        persona_payload = persona_schema.model_dump(exclude_none=True)
+        persona_payload = persona_schema.model_dump(exclude={"empleado", "responsable"})
         persona_payload["usuario_creacion"] = usuario_creacion
 
         nueva_persona = Persona(**persona_payload)
         await general_repo.OperacionesOrm(db).add_and_refresh(nueva_persona)
-        return nueva_persona.id
+        return nueva_persona

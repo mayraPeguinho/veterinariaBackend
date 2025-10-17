@@ -10,5 +10,10 @@ class Rol(Base):
     id = Column(Integer, primary_key=True)
     nombre = Column(String(30), nullable=False)
 
-    permisos = relationship("Permiso", secondary=rol_permiso, back_populates="roles")
+    permisos = relationship(
+        "Permiso",
+        secondary=rol_permiso,
+        back_populates="roles",
+        lazy="selectin",
+    )
     usuarios = relationship("Usuario", back_populates="rol")

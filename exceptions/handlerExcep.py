@@ -1,54 +1,54 @@
-from fastapi import Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from exceptions.generalRepo import (
-    APIException,
-    ErrorBaseDatos,
-    ErrorIntegridadReferencial,
-)
+from exceptions.general import APIException
 import logging
+from fastapi import FastAPI, Request, HTTPException
 
 logger = logging.getLogger(__name__)
 
-# arreglar manejador de excepciones...
+
+def api_exception_handler(request: Request, exc: APIException):
+    logger.warning(f"[Servicio] {request.url.path}: {exc}")
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.message},
+    )
 
 
-def appHandleException(request: Request, exc: Exception):
-    logger.error(f"Error en ruta {request.url.path}: {type(exc).__name__}: {exc}")
+def http_exception_handler(request: Request, exc: HTTPException):
+    logger.warning(f"[Router] {request.url.path}: {exc.detail}")
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.detail},
+    )
 
-    # Manejar excepciones personalizadas de la API
-    if isinstance(exc, APIException):
-        return JSONResponse(
-            status_code=exc.status_code,
-            content={"detail": exc.detail},
-        )
 
-    # Manejar errores de integridad de SQLAlchemy
-    elif isinstance(exc, IntegrityError):
-        logger.error(f"Error de integridad en BD: {exc}")
-        return JSONResponse(
-            status_code=400,
-            content={
-                "detail": "Error de integridad en la base de datos. Verifique los datos ingresados.",
-            },
-        )
+def unhandled_exception_handler(request: Request, exc: Exception):
+    logger.error(f"[BUG] {request.url.path}: {exc}", exc_info=True)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Error interno del servidor"},
+    )
 
-    # Manejar otros errores de SQLAlchemy
-    elif isinstance(exc, SQLAlchemyError):
-        logger.error(f"Error de SQLAlchemy: {exc}")
-        return JSONResponse(
-            status_code=500,
-            content={
-                "detail": "Error en la base de datos. Intente nuevamente.",
-            },
-        )
 
-    # Manejar errores genéricos
-    else:
-        logger.error(f"Error no manejado: {type(exc).__name__}: {exc}")
-        return JSONResponse(
-            status_code=500,
-            content={
-                "detail": "Error interno del servidor",
-            },
-        )
+async def integrity_error_handler(request: Request, exc: IntegrityError):
+    logger.error(f"[SQLIntegrity] {request.url.path}: {exc}", exc_info=True)
+    return JSONResponse(
+        status_code=409,
+        content={"detail": "No se puede eliminar porque está en uso."},
+    )
+
+
+async def sql_error_handler(request: Request, exc: SQLAlchemyError):
+    logger.error(f"[SQLError] {request.url.path}: {exc}", exc_info=True)
+    return JSONResponse(
+        status_code=409,
+        content={"detail": "Error de base de datos."},
+    )
+
+
+def register_exception_handlers(app: FastAPI):
+    app.add_exception_handler(APIException, api_exception_handler)
+    app.add_exception_handler(HTTPException, http_exception_handler)
+    app.add_exception_handler(Exception, unhandled_exception_handler)
+    app.add_exception_handler(IntegrityError, integrity_error_handler)
