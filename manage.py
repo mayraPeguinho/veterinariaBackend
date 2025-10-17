@@ -24,23 +24,20 @@ async def _init_db():
 
 
 async def _drop_db():
-    """Eliminar todas las tablas y recrear el esquema."""
-    async with engine.connect() as conn:
-        # habilitar autocommit
-        await conn.execution_options(isolation_level="AUTOCOMMIT")
-        await conn.execute(text("DROP SCHEMA public CASCADE"))
-        await conn.execute(text("CREATE SCHEMA public"))
+    """Eliminar todas las tablas y recrear el schema."""
+    async with engine.begin() as conn:
+        await conn.run_sync(
+            lambda sync_conn: sync_conn.execute(text("DROP SCHEMA public CASCADE"))
+        )
+        await conn.run_sync(
+            lambda sync_conn: sync_conn.execute(text("CREATE SCHEMA public"))
+        )
 
 
 async def _seed_db():
     """Aplicar seeds iniciales (idempotente)."""
     async with AsyncSessionLocal() as db:
-        try:
-            await crear_tablas_iniciales(db)
-            await db.commit()
-        except Exception:
-            await db.rollback()
-            raise
+        await crear_tablas_iniciales(db)
 
 
 # ----------------------

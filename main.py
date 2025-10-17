@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from exceptions.handlerExcep import appHandleException
+from exceptions.handlerExcep import register_exception_handlers
 
 # Importar models para registrar todos los modelos de SQLAlchemy
 from config.database import engine, Base
 
-from routers import auth
+from routers import auth, usuarios
 
 import pkgutil
 import importlib
@@ -18,8 +18,9 @@ for _, module_name, _ in pkgutil.iter_modules(models.__path__):
 
 
 app = FastAPI()
+app.include_router(usuarios.router)
 app.include_router(auth.router)
-app.add_exception_handler(Exception, appHandleException)
+register_exception_handlers(app)
 
 origins = [
     "http://localhost.tiangolo.com",
