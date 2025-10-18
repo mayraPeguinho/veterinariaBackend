@@ -62,16 +62,21 @@ async def registrarUsuario(
         persona_model.responsable = responsable_model
     await db.refresh(persona_model, ["responsable", "empleado"])
     await db.refresh(nuevoUsuario, ["persona"])
-    # return UsuarioOut.model_validate(nuevoUsuario, from_attributes=True)
     return nuevoUsuario
 
 
 async def obtenerPorNombreUsuario(db, username: str):
-    return await UsuariorRepo(db).buscarPorNombreUsuario(username)
+    usuario = await UsuariorRepo(db).buscarPorNombreUsuario(username)
+    if usuario:
+        return usuario
+    raise UsuarioNoEncontradoException()
 
 
 async def obtenerPorId(db, id_usuario: int):
-    return await UsuariorRepo(db).buscarPorId(id_usuario)
+    usuario = await UsuariorRepo(db).buscarPorId(id_usuario)
+    if usuario:
+        return usuario
+    raise UsuarioNoEncontradoException()
 
 
 async def obtenerTodos(db):

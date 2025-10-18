@@ -31,7 +31,11 @@ class UsuariorRepo:
         return result.scalars().first()
 
     async def buscarPorNombreUsuario(self, nombre_de_usuario: str) -> Usuario | None:
-        query = select(Usuario).where((Usuario.nombre_de_usuario == nombre_de_usuario))
+        query = (
+            select(Usuario)
+            .options(selectinload(Usuario.rol).selectinload(Rol.permisos))
+            .where(Usuario.nombre_de_usuario == nombre_de_usuario)
+        )
         result = await self.db.execute(query)
         return result.scalars().first()
 
@@ -45,7 +49,7 @@ class UsuariorRepo:
     async def obtenerTodos(self) -> List[Usuario]:
         query = select(Usuario)
         result = await self.db.execute(query)
-        return result.scalars().all()
+        return result.scalars().all() | []
 
     async def obtenerPermisos(self, usuario_id: int):
         query = (

@@ -25,7 +25,6 @@ metodos ,variables, nombre de archivos que no sean repositories,
 
 
 Lista a Realizar:
-1- Validacion para recursos no encontrados
 2- ENDPOINT PARA EDITAR USUARIO
 3- SALIDA DE FEHCAS
 4- VER TELEFONO
@@ -35,10 +34,6 @@ Lista a Realizar:
 8- Numero Legajo repetido, ver Excepcion
 11- Editar usuario (dependiendo del rol datos que se van a pedir)
 12- Eliminar Usuario... seria mas bien desactivar usuario/activar usuario.
-13- Enviar un mail desde la ap
-i con codigo, para reestablecer contraseña.
-14-usuario con la relacion persona, o empleado o responsable en login
-15-Definir y asignar permisos
-
+13- Enviar un mail desde la api con codigo, para reestablecer contraseña.
 
 2- ENDPOINTS DE CONFIGURACION HORARIO VETERINARIA, SOLO ADMINS

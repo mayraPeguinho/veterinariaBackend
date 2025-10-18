@@ -9,6 +9,12 @@ async def login(db: AsyncSession, username, password):
 
     usuario_existente = await service_usuarios.obtenerPorNombreUsuario(db, username)
     if verificarContraseña(password, usuario_existente.contrasenia):
-        return crearTokenAcceso({"sub": username})
+        return crearTokenAcceso(
+            {
+                "sub": username,
+                "rol": usuario_existente.rol.nombre,
+                "permisos": ", ".join(p.nombre for p in usuario_existente.rol.permisos),
+            }
+        )
     else:
         raise CredencialesInvalidasException()
