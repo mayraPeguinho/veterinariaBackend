@@ -10,6 +10,15 @@ class NumeroDocumentoAsignadoException(APIException):
         super().__init__(detail, status_code)
 
 
+class UsuarioNoEncontradoException(APIException):
+    def __init__(
+        self,
+        detail: str = "Usuario no encontrado",
+        status_code: int = 404,
+    ):
+        super().__init__(detail, status_code)
+
+
 class NombreUsuarioUsadoException(APIException):
     def __init__(
         self,

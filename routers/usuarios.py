@@ -41,6 +41,7 @@ async def obtenerUsuario(
 #     "/{id}",
 #     status_code=200,
 #     response_model=UsuarioOut,
+#     current_user=Depends(puedeRealizarAccionUsuario),
 # )
 # async def modificarUsuario(
 #     id: int,
