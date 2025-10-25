@@ -16,12 +16,13 @@ class UsuariorRepo:
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 
-    async def buscarPorId(self, id_usuario: int) -> Usuario | None:
+    async def obtenerPorId(self, id_usuario: int) -> Usuario | None:
 
         query = (
             select(Usuario)
             .where(Usuario.id == id_usuario)
             .options(
+                selectinload(Usuario.rol).selectinload(Rol.permisos),
                 selectinload(Usuario.persona).selectinload(Persona.responsable),
                 selectinload(Usuario.persona).selectinload(Persona.empleado),
             )
@@ -30,26 +31,35 @@ class UsuariorRepo:
         result = await self.db.execute(query)
         return result.scalars().first()
 
-    async def buscarPorNombreUsuario(self, nombre_de_usuario: str) -> Usuario | None:
+    async def obtenerPorNombreUsuario(self, nombre_de_usuario: str) -> Usuario | None:
         query = (
             select(Usuario)
-            .options(selectinload(Usuario.rol).selectinload(Rol.permisos))
+            .options(
+                selectinload(Usuario.rol).selectinload(Rol.permisos),
+                selectinload(Usuario.persona).selectinload(Persona.empleado),
+                selectinload(Usuario.persona).selectinload(Persona.responsable),
+            )
             .where(Usuario.nombre_de_usuario == nombre_de_usuario)
         )
         result = await self.db.execute(query)
         return result.scalars().first()
 
-    async def buscarPorDni(self, dni: str) -> Usuario | None:
+    async def obtenerPorDni(self, dni: str) -> Usuario | None:
         persona = await PersonaRepo(self.db).buscarPorDni(dni)
         if persona:
             query = select(Usuario).where((Usuario.persona_id == persona.id))
             result = await self.db.execute(query)
             return result.scalars().first()
 
+    async def obtenerPorEmail(self, email: str) -> Usuario | None:
+        query = select(Usuario).where(Usuario.email == email)
+        result = await self.db.execute(query)
+        return result.scalars().first()
+
     async def obtenerTodos(self) -> List[Usuario]:
         query = select(Usuario)
         result = await self.db.execute(query)
-        return result.scalars().all() | []
+        return result.scalars().all()
 
     async def obtenerPermisos(self, usuario_id: int):
         query = (

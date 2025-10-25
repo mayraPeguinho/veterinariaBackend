@@ -27,10 +27,10 @@ async def getCurrentUser(
     db: AsyncSession = Depends(get_db),
 ) -> Usuario | None:
     payload = decodificarTokenAcceso(token)
-    username = payload.get("sub")
-    if username is None:
-        raise CredencialesInvalidasException(detail=username)
-    return await UsuariorRepo(db).buscarPorNombreUsuario(username)
+    id_usuario = payload.get("sub")
+    if id_usuario is None:
+        raise CredencialesInvalidasException()
+    return await UsuariorRepo(db).obtenerPorId(int(id_usuario))
 
 
 def requierePermiso(nombre_permiso: str):
@@ -38,8 +38,6 @@ def requierePermiso(nombre_permiso: str):
         usuario=Depends(getCurrentUser),
         db: AsyncSession = Depends(get_db),
     ):
-        # Abrir sesión async
-        # Traer el rol del usuario y sus permisos
 
         rol = await RolRepo(db).buscarPorId(usuario.rol_id)
 
@@ -48,7 +46,6 @@ def requierePermiso(nombre_permiso: str):
                 detail="El usuario no tiene rol asignado"
             )
 
-        # Extraer nombres de permisos del rol
         permisos_del_rol = [p.nombre for p in rol.permisos]
 
         if nombre_permiso not in permisos_del_rol:

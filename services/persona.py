@@ -15,4 +15,5 @@ async def obtenerPersona(db: AsyncSession, persona_schema, usuario_creacion: str
 
         nueva_persona = Persona(**persona_payload)
         await general_repo.OperacionesOrm(db).add_and_refresh(nueva_persona)
+        await db.flush()
         return nueva_persona

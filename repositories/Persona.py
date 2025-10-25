@@ -12,7 +12,11 @@ class PersonaRepo:
     async def buscarPorDni(self, dni: str) -> Optional[Persona]:
         query = (
             select(Persona)
-            .options(selectinload(Persona.usuario))
+            .options(
+                selectinload(Persona.usuario),
+                selectinload(Persona.responsable),
+                selectinload(Persona.empleado),
+            )
             .where((Persona.dni == dni))
         )
         result = await self.db.execute(query)

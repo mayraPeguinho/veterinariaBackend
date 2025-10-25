@@ -15,12 +15,22 @@ class PersonaCreate(BaseModel):
     email: Optional[EmailStr]
 
 
+class PersonaEdit(PersonaCreate):
+    nombre: Annotated[str, Field(min_length=1, max_length=50)]
+    apellido: Annotated[str, Field(min_length=1, max_length=50)]
+    telefono: Optional[str] = None
+    genero: GeneroEnum
+    direccion: Optional[Annotated[str, Field(max_length=100)]] = None
+    email: Optional[EmailStr]
+    responsable: Optional[ResponsableCreate] = None
+
+
 class PersonaResponsableCreate(PersonaCreate):
     responsable: ResponsableCreate
 
 
 class PersonaEmpleadoCreate(PersonaCreate):
-    empleado: Optional[EmpleadoCreate] = None
+    empleado: EmpleadoCreate = None
 
 
 class PersonaOut(BaseModel):
@@ -37,7 +47,7 @@ class PersonaOut(BaseModel):
 
 
 class PersonaResponsableOut(PersonaOut):
-    responsable: ResponsableCreate
+    responsable: ResponsableOut
 
 
 class PersonaEmpleadoOut(PersonaOut):

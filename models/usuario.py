@@ -10,6 +10,7 @@ class Usuario(Base):
     id = Column(Integer, primary_key=True)
     nombre_de_usuario = Column(String(50), nullable=False, unique=True, index=True)
     contrasenia = Column(String(128), nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
 
     rol_id = Column(Integer, ForeignKey("Roles.id"), nullable=False)
     persona_id = Column(Integer, ForeignKey("Personas.id"), nullable=False, unique=True)

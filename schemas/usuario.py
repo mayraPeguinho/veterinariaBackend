@@ -1,22 +1,33 @@
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from schemas.persona import (
     PersonaResponsableCreate,
     PersonaEmpleadoCreate,
     PersonaEmpleadoOut,
     PersonaResponsableOut,
+    PersonaEdit,
 )
 from utils.enums import RolEnum
+from typing import Optional
 
 
-class UsuarioClienteCreate(BaseModel):
+class UsuarioActualEdit(BaseModel):
+    persona: PersonaEdit
+    nombre_de_usuario: Optional[str] = None
+    email: Optional[EmailStr] = None
+    contrasenia_nueva: Optional[str] = None
+    contrasenia_actual: Optional[str] = None
+
+
+class UsuarioExternoCreate(BaseModel):
     nombre_de_usuario: str = Field(..., min_length=3, max_length=50)
     contrasenia: str = Field(..., min_length=8)
     persona: PersonaResponsableCreate
+    email: EmailStr
 
 
-class UsuarioCreate(UsuarioClienteCreate):
+class UsuarioInternoCreate(UsuarioExternoCreate):
     rol_id: RolEnum = Field(..., description="ID del rol del usuario")
-    persona: PersonaResponsableCreate | PersonaEmpleadoCreate
+    persona: PersonaEmpleadoCreate
 
 
 class UsuarioOutBase(BaseModel):
@@ -24,10 +35,10 @@ class UsuarioOutBase(BaseModel):
     nombre_de_usuario: str
     rol_id: RolEnum
     persona_id: int
+    email: EmailStr
     model_config = ConfigDict(from_attributes=True)
 
 
 class UsuarioOut(UsuarioOutBase):
-
     persona: PersonaEmpleadoOut | PersonaResponsableOut
     persona_id: int = Field(exclude=True)

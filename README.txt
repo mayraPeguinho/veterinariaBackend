@@ -25,11 +25,8 @@ metodos ,variables, nombre de archivos que no sean repositories,
 
 
 Lista a Realizar:
-2- ENDPOINT PARA EDITAR USUARIO
-3- SALIDA DE FEHCAS
 4- VER TELEFONO
 5- paginar usuarios
-6- Ver Exception para token expirado
 7- REFRESH TOKEN
 8- Numero Legajo repetido, ver Excepcion
 11- Editar usuario (dependiendo del rol datos que se van a pedir)

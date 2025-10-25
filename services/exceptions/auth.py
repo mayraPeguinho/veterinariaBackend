@@ -17,3 +17,21 @@ class PermisosInsuficientesException(APIException):
         status_code: int = 403,
     ):
         super().__init__(detail, status_code)
+
+
+class TokenExpiradoException(APIException):
+    def __init__(
+        self,
+        detail: str = "El token ha expirado.",
+        status_code: int = 403,
+    ):
+        super().__init__(detail, status_code)
+
+
+class RefreshTokenExpiradoException(APIException):
+    def __init__(
+        self,
+        detail: str = "El refresh token ha expirado.",
+        status_code: int = 403,
+    ):
+        super().__init__(detail, status_code)

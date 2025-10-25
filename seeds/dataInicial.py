@@ -39,6 +39,7 @@ async def creacion_permisos(db: AsyncSession):
             Permiso(nombre="editar_usuario"),
             Permiso(nombre="eliminar_usuario"),
             Permiso(nombre="ver_turnos"),
+            Permiso(nombre="ver_usuarios"),
             Permiso(nombre="editar_turnos"),
         ]
         db.add_all(nuevos_permisos)
@@ -123,8 +124,8 @@ async def asignar_permisos(db: AsyncSession):
     )
     await asignar_permisos_a_rol(
         db,
-        nombre_rol="Empleado",
-        nombres_permisos=["ver_turnos"],
+        nombre_rol="Cliente",
+        nombres_permisos=["editar_usuario"],
     )
 
 
@@ -163,6 +164,7 @@ async def crear_usuario_admin(db: AsyncSession):
         rol_id=rol_admin.id,
         persona_id=persona_admin.id,
         usuario_creacion="sistema",
+        email="admin@admin.com",
     )
     db.add(usuario_admin)
 
