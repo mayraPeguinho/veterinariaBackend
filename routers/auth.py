@@ -15,3 +15,11 @@ async def login(
     db: AsyncSession = Depends(get_db),
 ):
     return await service_auth.login(db, form_data.username, form_data.password)
+
+
+@router.post("/refresh-token", status_code=200, response_model=TokenResponse)
+async def refrescarTokem(
+    refres_token: str,
+    db: AsyncSession = Depends(get_db),
+):
+    return await service_auth.refrescarToken(db, refres_token)

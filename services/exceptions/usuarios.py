@@ -28,6 +28,15 @@ class NombreUsuarioUsadoException(APIException):
         super().__init__(detail, status_code)
 
 
+class EmailUsadoException(APIException):
+    def __init__(
+        self,
+        detail: str = "El email ya está en uso.",
+        status_code: int = 409,
+    ):
+        super().__init__(detail, status_code)
+
+
 class PersonaExistenteComoUsuarioException(APIException):
     def __init__(
         self,
