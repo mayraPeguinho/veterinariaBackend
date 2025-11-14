@@ -19,6 +19,15 @@ class UsuarioNoEncontradoException(APIException):
         super().__init__(detail, status_code)
 
 
+class EditarUsuarioPropioException(APIException):
+    def __init__(
+        self,
+        detail: str = "No puede editar su propio usuario desde esta sección",
+        status_code: int = 400,
+    ):
+        super().__init__(detail, status_code)
+
+
 class NombreUsuarioUsadoException(APIException):
     def __init__(
         self,

@@ -6,7 +6,7 @@ from models.persona import Persona
 from models.rol_permiso import rol_permiso
 from models.rol import Rol
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, func, desc, asc
 from sqlalchemy.orm import selectinload
 from typing import List
 from repositories.persona import PersonaRepo
@@ -56,10 +56,31 @@ class UsuariorRepo:
         result = await self.db.execute(query)
         return result.scalars().first()
 
-    async def obtenerTodos(self) -> List[Usuario]:
+    async def obtenerTodos(self) -> List[Usuario] | None:
         query = select(Usuario)
         result = await self.db.execute(query)
         return result.scalars().all()
+
+    async def obtenerPaginado(
+        self, limit, offset, order_by, order_direction
+    ) -> List[Usuario] | None:
+        total_result = await self.db.execute(select(func.count(Usuario.id)))
+        total = total_result.scalar()
+
+        query = select(Usuario).offset(offset).limit(limit)
+
+        if order_direction.lower() == "desc":
+            query = query.order_by(
+                desc(order_by),
+            )
+        else:
+            query = query.order_by(
+                asc(order_by),
+            )
+
+        result = await self.db.execute(query.offset(offset).limit(limit))
+        items = result.scalars().all()
+        return {"total": total, "usuarios": items}
 
     async def obtenerPermisos(self, usuario_id: int):
         query = (

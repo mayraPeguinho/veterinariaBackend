@@ -14,7 +14,6 @@ class Empleado(Base):
     matricula = Column(String(200), nullable=True)
     fecha_ingreso = Column(DateTime, nullable=False)
     fecha_egreso = Column(DateTime, nullable=True)
-    # activo = Column(Boolean, nullable=False)
     observacion = Column(String(600), nullable=True)
 
     persona_id = Column(Integer, ForeignKey("Personas.id"), nullable=False)

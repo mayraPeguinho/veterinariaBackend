@@ -24,3 +24,7 @@ class DiaSemanaEnum(str, Enum):
     viernes = "Viernes"
     sabado = "Sábado"
     domingo = "Domingo"
+
+
+class UsuariosOrderBy(str, Enum):
+    nombre_de_usuario = "nombre_de_usuario"

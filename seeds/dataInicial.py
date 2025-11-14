@@ -37,6 +37,7 @@ async def creacion_permisos(db: AsyncSession):
         nuevos_permisos = [
             Permiso(nombre="crear_usuario"),
             Permiso(nombre="editar_usuario"),
+            Permiso(nombre="editar_usuarios"),
             Permiso(nombre="eliminar_usuario"),
             Permiso(nombre="ver_turnos"),
             Permiso(nombre="ver_usuarios"),
@@ -110,6 +111,7 @@ async def asignar_permisos(db: AsyncSession):
             "editar_usuario",
             "ver_usuarios",
             "crear_turno",
+            "editar_usuarios",
         ],
     )
     await asignar_permisos_a_rol(
@@ -120,6 +122,7 @@ async def asignar_permisos(db: AsyncSession):
             "editar_usuario",
             "ver_turnos",
             "ver_usuarios",
+            "editar_usuarios",
         ],
     )
     await asignar_permisos_a_rol(

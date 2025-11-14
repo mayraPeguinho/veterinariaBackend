@@ -26,11 +26,8 @@ metodos ,variables, nombre de archivos que no sean repositories,
 
 Lista a Realizar:
 4- VER TELEFONO
-5- paginar usuarios
-7- REFRESH TOKEN
-8- Numero Legajo repetido, ver Excepcion
-11- Editar usuario (dependiendo del rol datos que se van a pedir)
-12- Eliminar Usuario... seria mas bien desactivar usuario/activar usuario.
+11- Editar usuario, es posible editar el email... y el rol?? el nombre de usuario idem...
+
 13- Enviar un mail desde la api con codigo, para reestablecer contraseña.
 
 2- ENDPOINTS DE CONFIGURACION HORARIO VETERINARIA, SOLO ADMINS
