@@ -7,7 +7,14 @@ from schemas.persona import (
     PersonaEdit,
 )
 from utils.enums import RolEnum
-from typing import Optional
+from typing import Optional, List
+
+
+class UsuarioEdit(BaseModel):
+    nombre_de_usuario: Optional[str] = None
+    email: Optional[EmailStr] = None
+    # rol_id: RolEnum = Field(..., description="ID del rol del usuario")
+    activo: bool = Field(..., description="Indica si el usuario está activo o inactivo")
 
 
 class UsuarioActualEdit(BaseModel):
@@ -36,7 +43,13 @@ class UsuarioOutBase(BaseModel):
     rol_id: RolEnum
     persona_id: int
     email: EmailStr
+    activo: bool = Field(..., description="Indica si el usuario está activo o inactivo")
     model_config = ConfigDict(from_attributes=True)
+
+
+class UsuariosPaginado(BaseModel):
+    total: int
+    usuarios: List[UsuarioOutBase]
 
 
 class UsuarioOut(UsuarioOutBase):

@@ -1,11 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from security.auth import generarContraseñaHash, verificarContraseña
 from models.usuario import Usuario
-from schemas.usuario import (
-    UsuarioInternoCreate,
-    UsuarioExternoCreate,
-    UsuarioActualEdit,
-)
+from schemas.usuario import *
 from services.exceptions.auth import *
 from services.exceptions.usuarios import *
 from repositories.usuario import UsuariorRepo
@@ -87,12 +83,6 @@ async def registrarUsuarioInterno(
     return nuevoUsuario
 
 
-async def _validarDatosBasicos(db: AsyncSession, usuario):
-    await validarNombreUsuarioUnico(db, usuario.nombre_de_usuario)
-    await validarDniUnico(db, usuario.persona.dni)
-    await validarEmailUnico(db, usuario.email)
-
-
 async def _crearUsuarioBase(
     db: AsyncSession,
     usuario,
@@ -130,32 +120,30 @@ async def obtenerTodos(db):
     return await UsuariorRepo(db).obtenerTodos()
 
 
-async def validarNombreUsuarioUnico(db: AsyncSession, nombre_usuario: str):
-    if await UsuariorRepo(db).obtenerPorNombreUsuario(nombre_usuario):
-        raise NombreUsuarioUsadoException()
+async def obtenerPaginado(db, limit, offset, order_by, order_direction):
+    return await UsuariorRepo(db).obtenerPaginado(
+        limit, offset, order_by, order_direction
+    )
 
 
-async def validarDniUnico(db: AsyncSession, dni: str):
-    if await UsuariorRepo(db).obtenerPorDni(dni):
-        raise NumeroDocumentoAsignadoException()
+async def modificar(db, id: int, usuario: UsuarioEdit, current_user) -> Usuario:
+    if id == current_user.id:
+        raise EditarUsuarioPropioException()
+    usuario_model = await obtenerPorId(db, id)
+    usuario_model.activo = usuario.activo
+    if usuario.nombre_de_usuario != usuario_model.nombre_de_usuario:
+        await validarNombreUsuarioUnico(db, usuario.nombre_de_usuario)
+        usuario_model.nombre_de_usuario = usuario.nombre_de_usuario
+
+    if usuario.email != usuario_model.email:
+        await validarEmailUnico(db, usuario.email)
+        usuario_model.email = usuario.email
+    usuario_model.usuario_modificacion = current_user
+
+    return usuario_model
 
 
-async def validarEmailUnico(db: AsyncSession, email: str):
-    if await UsuariorRepo(db).obtenerPorEmail(email):
-        raise EmailUsadoException()
-
-
-def validarPermisoCrearUsuarioAdmin(
-    usuario: UsuarioInternoCreate, current_user: Usuario
-):
-    if (
-        usuario.rol_id == RolEnum.ADMIN.value
-        and current_user.rol_id != RolEnum.ADMIN.value
-    ):
-        raise PermisosInsuficientesException()
-
-
-async def modificarUsuarioActual(
+async def modificarActual(
     db, usuario: UsuarioActualEdit, current_user: Usuario
 ) -> Usuario:
     requiere_autenticacion = (
@@ -204,8 +192,41 @@ def _actualizarDatosPersonales(
     persona_actual.genero = persona_nueva.genero.value
     persona_actual.direccion = persona_nueva.direccion
     persona_actual.email = persona_nueva.email
+    persona_actual.usuario_modificacion = current_user.nombre_de_usuario
 
     if persona_nueva.responsable and persona_actual.responsable:
         persona_actual.responsable.acepta_recordatorios = (
             persona_nueva.responsable.acepta_recordatorios
         )
+        persona_actual.responsable.usuario_modificacion = current_user.nombre_de_usuario
+
+
+async def validarNombreUsuarioUnico(db: AsyncSession, nombre_usuario: str):
+    if await UsuariorRepo(db).obtenerPorNombreUsuario(nombre_usuario):
+        raise NombreUsuarioUsadoException()
+
+
+async def validarDniUnico(db: AsyncSession, dni: str):
+    if await UsuariorRepo(db).obtenerPorDni(dni):
+        raise NumeroDocumentoAsignadoException()
+
+
+async def validarEmailUnico(db: AsyncSession, email: str):
+    if await UsuariorRepo(db).obtenerPorEmail(email):
+        raise EmailUsadoException()
+
+
+def validarPermisoCrearUsuarioAdmin(
+    usuario: UsuarioInternoCreate, current_user: Usuario
+):
+    if (
+        usuario.rol_id == RolEnum.ADMIN.value
+        and current_user.rol_id != RolEnum.ADMIN.value
+    ):
+        raise PermisosInsuficientesException()
+
+
+async def _validarDatosBasicos(db: AsyncSession, usuario):
+    await validarNombreUsuarioUnico(db, usuario.nombre_de_usuario)
+    await validarDniUnico(db, usuario.persona.dni)
+    await validarEmailUnico(db, usuario.email)

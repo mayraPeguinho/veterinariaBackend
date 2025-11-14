@@ -1,5 +1,5 @@
 from config.database import Base
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func, Boolean
 from sqlalchemy.orm import relationship
 from .rol import Rol
 
@@ -11,6 +11,7 @@ class Usuario(Base):
     nombre_de_usuario = Column(String(50), nullable=False, unique=True, index=True)
     contrasenia = Column(String(128), nullable=False)
     email = Column(String(100), unique=True, nullable=False)
+    activo = Column(Boolean, nullable=False, default=True)
 
     rol_id = Column(Integer, ForeignKey("Roles.id"), nullable=False)
     persona_id = Column(Integer, ForeignKey("Personas.id"), nullable=False, unique=True)
